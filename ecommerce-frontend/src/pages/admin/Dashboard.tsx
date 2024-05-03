@@ -4,12 +4,17 @@ import { FaRegBell } from "react-icons/fa";
 import userImg from "../../assets/userpic.png";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import data from "../../assets/data.json";
-
+import { BarChart, DoughnutChart } from "../../components/admin/Charts";
+import { BiMaleFemale } from "react-icons/bi";
+import Table from "../../components/admin/DashBoardTable";
 const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50/50 ">
-      <div className="grid grid-cols-6">
-        <AdminSidebar />
+      <div className="grid xl:grid-cols-6">
+        <div>
+          <AdminSidebar />
+        </div>
+
         <main className="col-span-4 md:col-span-5 overflow-y-auto">
           {/*Bar section  */}
 
@@ -68,33 +73,69 @@ const Dashboard = () => {
           {/*Graph section  */}
 
           <section className="m-5">
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid md:grid-cols-4 gap-5">
               {/*revenue-chart section  */}
 
-              <div className="col-span-3 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+              <div className="col-span-3 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5 flex flex-col justify-center text-center gap-5">
                 <h2 className="block antialiased tracking-normal text-2xl font-semibold leading-snug ">
                   Revenue & Transaction
                 </h2>
+                <BarChart
+                  data_2={[300, 144, 433, 655, 237, 755, 190]}
+                  data_1={[200, 444, 343, 556, 778, 455, 990]}
+                  title_1="Revenue"
+                  title_2="Transaction"
+                  bgColor_1="rgb(0,115,255)"
+                  bgColor_2="rgba(53,162,235,0.8)"
+                />
               </div>
 
               {/*dashboard section  */}
 
-              <div className="bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+              <div className="bg-clip-border rounded-xl bg-white text-gray-700 shadow-md flex justify-center text-center flex-col gap-5 p-10">
                 <h2 className="block antialiased tracking-normal text-2xl font-semibold leading-snug ">
                   Inventory
                 </h2>
+
                 <div>
-              {data.categories.map((i) => (
-                <CategoryItem
-                  key={i.heading}
-                  heading={i.heading}
-                  value={i.value}
-                  color={`hsl(${i.value * 4},${i.value}%,50%)`}
-                />
-              ))}
-            </div>
+                  {data.categories.map((i) => (
+                    <CategoryItem
+                      key={i.heading}
+                      heading={i.heading}
+                      value={i.value}
+                      color={`hsl(${i.value * 4},${i.value}%,50%)`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
+          </section>
+
+          <section className="m-5">
+            <div className="grid grid-cols-4 gap-5">
+              {/* gender chart */}
+              <div className="col-span-1 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5 flex flex-col items-center text-center gap-5 relative">
+                <h2 className="antialiased tracking-normal text-2xl font-semibold leading-snug">
+                  Gender Ratio
+                </h2>
+                {/* Charts */}
+                <DoughnutChart
+                  labels={["Female", "Male"]}
+                  data={[12, 19]}
+                  backgroundColor={["hsl(340,82%,56%)", "rgba(53,162,235,0.8)"]}
+                  cutout={100}
+                />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <BiMaleFemale className="w-8 h-8" />
+                </div>
+              </div>
+
+              <div className="col-span-3 g-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5">
+                <Table data={data.transaction} />
+              </div>
+            </div>
+
+            {/* Table */}
           </section>
         </main>
       </div>
@@ -170,17 +211,20 @@ interface CategoryItemProps {
 }
 
 const CategoryItem = ({ color, value, heading }: CategoryItemProps) => (
-  <div className="category-item">
-    <h5>{heading}</h5>
-    <div className="w-full h-full bg-gray-200 absolute">
-      <div className="h-full absolute"
+  <div className="category-item flex flex-col">
+    <div className="flex justify-between mb-1 mt-3">
+      <span className="text-base font-medium ">{heading}</span>
+      <span className="text-sm font-medium">{value}%</span>
+    </div>
+    <div className="w-full bg-gray-200 rounded-full h-2.5">
+      <div
+        className="h-2.5 rounded-full"
         style={{
           backgroundColor: color,
           width: `${value}%`,
         }}
       ></div>
     </div>
-    <span>{value}%</span>
   </div>
 );
 
