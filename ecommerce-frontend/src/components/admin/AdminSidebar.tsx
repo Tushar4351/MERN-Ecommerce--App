@@ -173,7 +173,7 @@ interface LiProps {
 }
 const Li = ({ url, text, location, Icon }: LiProps) => (
   <li
-    className="rounded-lg"
+    className="rounded-xl"
     style={{
       backgroundColor: location.pathname.includes(url)
         ? "rgba(0,115,255,0.1)"
