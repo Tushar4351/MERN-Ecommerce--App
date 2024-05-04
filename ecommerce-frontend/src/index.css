@@ -3,38 +3,57 @@
 @tailwind utilities;
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  a {
-    text-decoration: none;
-    color: black;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+a {
+  text-decoration: none;
+  color: black;
+}
 
-  .widget-circle {
-    position: relative;
-    width: 4rem; /* Set the width and height to the same value for a perfect circle */
-    height: 4rem; /* Adjust as needed */
-    border-radius: 50%;
-    flex: none;
-    display: grid;
-    place-items: center;
-    background-color: transparent; /* Change as needed */
-  }
-  
-  .widget-circle::before {
-    content: "";
-    position: absolute;
-    width: 3rem; /* Set the width and height slightly smaller than the circle for the border */
-    height: 3rem; /* Adjust as needed */
-    background-color: white; /* Change as needed */
-    border-radius: 50%;
-  }
-  
-  span {
-    position: relative;
-    z-index: 1; /* Ensure the text is above the white circle */
-  }
+.widget-circle {
+  position: relative;
+  width: 4rem; /* Set the width and height to the same value for a perfect circle */
+  height: 4rem; /* Adjust as needed */
+  border-radius: 50%;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background-color: transparent; /* Change as needed */
+}
+
+.widget-circle::before {
+  content: "";
+  position: absolute;
+  width: 3rem; /* Set the width and height slightly smaller than the circle for the border */
+  height: 3rem; /* Adjust as needed */
+  background-color: white; /* Change as needed */
+  border-radius: 50%;
+}
+
+span {
+  position: relative;
+  z-index: 1; /* Ensure the text is above the white circle */
+}
+.table-pagination {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+.table-pagination > button {
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgba(0, 115, 255);
+  color: white;
+}
+.table-pagination > button:disabled {
+  background-color: rgba(0, 115, 255, 0.1);
+  cursor: not-allowed;
+}
