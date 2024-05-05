@@ -1,8 +1,8 @@
-import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
 
 import { ReactElement, useCallback, useState } from "react";
 
-import TableHOC from "../../components/admin/TableHOC";
+import TableHOC from "../../components/Shared/admin/TableHOC";
 import { Column } from "react-table";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";

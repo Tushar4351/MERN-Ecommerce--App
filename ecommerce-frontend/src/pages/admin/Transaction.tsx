@@ -1,8 +1,8 @@
-import AdminSidebar from "../../components/admin/AdminSidebar";
+import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
 import { Column } from "react-table";
 import { Link } from "react-router-dom";
 import { ReactElement, useState, useCallback } from "react";
-import TableHOC from "../../components/admin/TableHOC";
+import TableHOC from "../../components/Shared/admin/TableHOC";
 
 interface DataType {
   user: string;

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react"; //Lazy()So that if we are not in that page that page wont load //<Suspense> lets you display a fallback until its children have finished loading.
-import Loader from "./components/Loader";
+import Loader from "./components/Shared/Loader";
 
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
@@ -13,15 +13,14 @@ const Customers = lazy(() => import("./pages/admin/Customers"));
 const Transaction = lazy(() => import("./pages/admin/Transaction"));
 
 //Managenment
-
 const NewProduct = lazy(
-  () => import("./components/admin/management/NewProduct")
+  () => import("./components/Shared/admin/management/NewProduct")
 );
 const ProductManagement = lazy(
-  () => import("./components/admin/management/ProductManagement")
+  () => import("./components/Shared/admin/management/ProductManagement")
 );
 const TransactionManagement = lazy(
-  () => import("./components/admin/management/TransactionManagement")
+  () => import("./components/Shared/admin/management/TransactionManagement")
 );
 
 const App = () => {

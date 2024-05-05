@@ -1,5 +1,5 @@
-import AdminSidebar from "../../components/admin/AdminSidebar";
-import TableHOC from "../../components/admin/TableHOC";
+import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
+import TableHOC from "../../components/Shared/admin/TableHOC";
 import { FaTrash } from "react-icons/fa";
 import { Column } from "react-table";
 import { useState, useCallback } from "react";
