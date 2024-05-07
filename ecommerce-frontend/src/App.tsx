@@ -26,6 +26,11 @@ const BarCharts = lazy(() => import("./pages/admin/charts/BarCharts"));
 const LineCharts = lazy(() => import("./pages/admin/charts/LineCharts"));
 const PieCharts = lazy(() => import("./pages/admin/charts/PieCharts"));
 
+//Apps
+const Coupon = lazy(() => import("./pages/admin/apps/Coupon"));
+const Stopwatch = lazy(() => import("./pages/admin/apps/Stopwatch"));
+const Toss = lazy(() => import("./pages/admin/apps/Toss"));
+
 const App = () => {
   return (
     <Router>
@@ -48,9 +53,9 @@ const App = () => {
           <Route path="/admin/chart/pie" element={<PieCharts />} />
           <Route path="/admin/chart/line" element={<LineCharts />} />
           {/* Apps */}
-          {/* <Route path="/admin/app/coupon" element={<Coupon />} />
-            <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
-            <Route path="/admin/app/toss" element={<Toss />} /> */}
+          <Route path="/admin/app/coupon" element={<Coupon />} />
+          <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
+          <Route path="/admin/app/toss" element={<Toss />} />
 
           {/* Management */}
           <Route path="/admin/product/new" element={<NewProduct />} />
