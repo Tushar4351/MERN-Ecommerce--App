@@ -18,13 +18,13 @@ const months = [
 
 const BarCharts = () => {
   return (
-    <div className="admin-container grid grid-cols-6 min-h-screen bg-gray-50/50">
-      <div>
+    <div className="admin-container xl:grid xl:grid-cols-6 min-h-screen bg-gray-50/50">
+         <div>
         <AdminSidebar />
       </div>
 
-      <main className="chart-container col-span-4 md:col-span-5 g-clip-border rounded-xl bg-white shadow-md p-5 overflow-y-auto">
-        <h1 className="text-3xl font-bold mt-10 ml-8">Line Charts</h1>
+      <main className="chart-container m-4 md:col-span-5 g-clip-border rounded-xl bg-white shadow-md p-5 overflow-y-auto">
+        <h1 className="text-md md:text-3xl font-bold mt-10 ml-8">Line Charts</h1>
         <section className="w-4/5 mx-auto my-16 flex flex-col gap-10">
           <LineChart
             data={[
@@ -35,7 +35,7 @@ const BarCharts = () => {
             backgroundColor="rgba(53, 162, 255,0.5)"
             labels={months}
           />
-          <h2 className="text-2xl uppercase text-center text-gray-700">Active Users</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Active Users</h2>
         </section>
         <section className="w-4/5 mx-auto my-16 flex flex-col gap-10">
           <LineChart
@@ -45,7 +45,7 @@ const BarCharts = () => {
             label="Products"
             labels={months}
           />
-          <h2 className="text-2xl uppercase text-center text-gray-700">Total Products (SKU)</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Total Products (SKU)</h2>
         </section>
 
         <section className="w-4/5 mx-auto my-16 flex flex-col gap-10">
@@ -59,7 +59,7 @@ const BarCharts = () => {
             label="Revenue"
             labels={months}
           />
-          <h2 className="text-2xl uppercase text-center text-gray-700">Total Revenue</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Total Revenue</h2>
         </section>
 
         <section className="w-4/5 mx-auto my-16 flex flex-col gap-10">
@@ -73,7 +73,7 @@ const BarCharts = () => {
             label="Discount"
             labels={months}
           />
-          <h2 className="text-2xl uppercase text-center text-gray-700">Discount Allotted</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Discount Allotted</h2>
         </section>
       </main>
     </div>

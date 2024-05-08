@@ -10,7 +10,7 @@ import Table from "../../components/Shared/admin/DashBoardTable";
 const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50/50 ">
-      <div className="grid xl:grid-cols-6">
+      <div className=" grid xl:grid-cols-6">
         <div>
           <AdminSidebar />
         </div>
@@ -19,7 +19,7 @@ const Dashboard = () => {
           {/*Bar section  */}
 
           <div className="m-5">
-            <div className="flex flex-row mt-5 gap-10">
+            <div className="flex flex-row mt-5 gap-2 sm:gap-10">
               <div className="flex pl-2 shadow-md items-center w-full rounded-xl bg-white">
                 <BsSearch />
                 <input
@@ -28,7 +28,7 @@ const Dashboard = () => {
                   placeholder="Search for data, users, docs"
                 />
               </div>
-              <div className="flex gap-5">
+              <div className="flex gap-2 sm:gap-5">
                 <FaRegBell className="h-10 w-10 cursor-pointer" />
                 <img
                   className="h-10 w-10 cursor-pointer"
@@ -76,8 +76,8 @@ const Dashboard = () => {
             <div className="grid md:grid-cols-4 gap-5">
               {/*revenue-chart section  */}
 
-              <div className="col-span-3 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5 flex flex-col justify-center text-center gap-5">
-                <h2 className="block antialiased tracking-normal text-2xl font-semibold leading-snug ">
+              <div className="col-span-3 w-11/12 md:w-full  bg-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5 flex flex-col justify-center text-center gap-5">
+                <h2 className="block antialiased tracking-normal text-md md:text-2xl font-semibold leading-snug ">
                   Revenue & Transaction
                 </h2>
                 <BarChart
@@ -92,7 +92,7 @@ const Dashboard = () => {
 
               {/*dashboard section  */}
 
-              <div className="bg-clip-border rounded-xl bg-white text-gray-700 shadow-md flex justify-center text-center flex-col gap-5 p-10">
+              <div className="col-span-3 w-11/12 md:col-span-1 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md flex justify-center text-center flex-col gap-5 p-10">
                 <h2 className="block antialiased tracking-normal text-2xl font-semibold leading-snug ">
                   Inventory
                 </h2>
@@ -111,31 +111,35 @@ const Dashboard = () => {
             </div>
           </section>
 
-          <section className="m-5">
-            <div className="grid grid-cols-4 gap-5">
-              {/* gender chart */}
-              <div className="col-span-1 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5 flex flex-col items-center text-center gap-5 relative">
-                <h2 className="antialiased tracking-normal text-2xl font-semibold leading-snug">
-                  Gender Ratio
-                </h2>
-                {/* Charts */}
-                <DoughnutChart
-                  labels={["Female", "Male"]}
-                  data={[12, 19]}
-                  backgroundColor={["hsl(340,82%,56%)", "rgba(53,162,235,0.8)"]}
-                  cutout={100}
-                />
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <BiMaleFemale className="w-8 h-8" />
-                </div>
-              </div>
+          <section className="transaction-container m-5">
+            <div className="gender-chart">
+              <h2>Gender Ratio</h2>
 
-              <div className="col-span-3 g-clip-border rounded-xl bg-white text-gray-700 shadow-md p-5">
-                <Table data={data.transaction} />
-              </div>
+              <DoughnutChart
+                labels={["Female", "Male"]}
+                data={[12, 19]}
+                backgroundColor={["hsl(340,82%,56%)", "rgba(53,162,235,0.8)"]}
+                cutout={90}
+              />
+
+              <p>
+                <BiMaleFemale />
+              </p>
             </div>
 
-            {/* Table */}
+            <Table data={data.transaction} />
+            <style>
+              {`
+      @media screen and (max-width: 1200px) {
+        .transaction-container {
+          justify-content: center;
+          flex-wrap: wrap;
+          padding: 2rem;
+          height: unset;
+        }
+      }
+    `}
+            </style>
           </section>
         </main>
       </div>

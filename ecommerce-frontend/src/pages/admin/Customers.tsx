@@ -101,16 +101,15 @@ const Customers = () => {
     []
   );
   return (
-    <div className="h-screen grid grid-cols-6 bg-gray-50/50">
-      <div>
-        {" "}
-        <AdminSidebar />{" "}
-      </div>
-
-      <div className="md:col-span-5 flex flex-row overflow-y-auto ml-4 p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-        <div className="w-full">{Table()}</div>
-      </div>
+    <div className="h-screen xl:grid xl:grid-cols-6 bg-gray-50/50">
+    <div>
+      <AdminSidebar />
     </div>
+  
+    <div className="md:col-span-5 flex flex-row overflow-y-auto m-4 p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div className="w-full">{Table()}</div>
+    </div>
+  </div>
   );
 };
 

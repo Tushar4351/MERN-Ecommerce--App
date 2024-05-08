@@ -48,12 +48,12 @@ const Coupon = () => {
   }, [coupon]);
 
   return (
-    <div className="admin-container min-h-screen grid grid-cols-6 bg-gray-50/50">
+    <div className="admin-container h-screen xl:grid xl:grid-cols-6 bg-gray-50/50">
       <div>
         <AdminSidebar />
       </div>
-      <main className="dashboard-app-container col-span-4 md:col-span-5 g-clip-border rounded-xl bg-white shadow-md p-5 overflow-y-auto">
-        <h1 className="text-3xl font-bold mt-10 ml-8">Coupon</h1>
+      <main className="dashboard-app-container h-screen md:col-span-5 g-clip-border rounded-xl bg-white shadow-md p-5 overflow-y-auto">
+        <h1 className="text-md md:text-3xl font-bold mt-10 ml-8">Coupon</h1>
         <section className="flex flex-col justify-center items-center gap-2 h-full">
           <form className="coupon-form" onSubmit={submitHandler}>
             <input
@@ -97,9 +97,7 @@ const Coupon = () => {
               />
               <span>Symbols</span>
             </fieldset>
-            <Button variant="destructive" >
-              Generate
-            </Button>
+            <Button variant="destructive">Generate</Button>
           </form>
 
           {coupon && (

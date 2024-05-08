@@ -54,15 +54,15 @@ const Stopwatch: React.FC = () => {
   };
 
   return (
-    <div className="admin-container min-h-screen grid grid-cols-6 bg-gray-50/50">
+    <div className="admin-container min-h-screen grid grid-cols-1 xl:grid-cols-6 bg-gray-50/50">
       <div>
         <AdminSidebar />
       </div>
-      <main className="dashboard-app-container col-span-4 md:col-span-5 g-clip-border rounded-xl bg-white shadow-md p-5 overflow-y-auto">
-        <h1 className="text-3xl font-bold mt-10 ml-8">Stopwatch</h1>
+      <main className="dashboard-app-container col-span-4 md:col-span-5 g-clip-border rounded-xl bg-white shadow-md m-4 p-5 overflow-y-auto">
+        <h1 className="text-md md:text-3xl font-bold mt-10 ml-8">Stopwatch</h1>
         <section className="flex flex-col justify-center items-center gap-2 h-screen">
           <div className="stopwatch flex flex-col justify-center items-center ">
-            <div className="text-center text-6xl" id="time">
+            <div className="text-center text-3xl sm:text-6xl" id="time">
               {formatTime(time)}
             </div>
             <div className="mt-6 flex gap-2">

@@ -204,13 +204,12 @@ const Products = () => {
   );
 
   return (
-    <div className="h-screen grid grid-cols-6 bg-gray-50/50">
+    <div className="h-screen grid grid-cols-1 xl:grid-cols-6 bg-gray-50/50">
       <div>
-        {" "}
-        <AdminSidebar />{" "}
+        <AdminSidebar />
       </div>
 
-      <div className="md:col-span-5 flex flex-row overflow-y-auto ml-4 p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+      <div className="md:col-span-5 flex flex-row overflow-y-auto m-4 p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
         <div className="w-full">{Table()}</div>
         <Link to="/admin/product/new" className="create-product-btn">
           <FaPlus className="bg-red-700 text-white w-8 h-8 rounded-full p-1.5 hover:opacity-65" />

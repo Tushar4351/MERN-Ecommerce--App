@@ -4,16 +4,16 @@ import { categories } from "../../../assets/data.json";
 
 const PieCharts = () => {
   return (
-    <div className="admin-container min-h-screen grid grid-cols-6 bg-gray-50/50">
-      <div>
+    <div className="admin-container min-h-screen xl:grid xl:grid-cols-6 bg-gray-50/50">
+    <div >
       <AdminSidebar />
-      </div>
+    </div>
       
-      <main className="chart-container col-span-4 md:col-span-5 g-clip-border rounded-xl bg-white  shadow-md p-5 overflow-y-auto">
-        <h1 className="text-3xl font-bold mt-10 ml-8">Pie & Doughnut Charts</h1>
+      <main className="chart-container col-span-4 md:col-span-5 g-clip-border rounded-xl bg-white m-4  shadow-md p-5 overflow-y-auto">
+        <h1 className="text-md md:text-3xl font-bold mt-10 ml-8">Pie & Doughnut Charts</h1>
        
         <section className="w-80 mx-auto my-16">
-          <div className="max-w-96 mx-auto mt-24 mb-n1">
+          <div className="max-w-96 mx-auto md:mt-24 mb-n1">
             <PieChart
               labels={["Processing", "Shipped", "Delivered"]}
               data={[12, 9, 13]}
@@ -25,7 +25,7 @@ const PieCharts = () => {
               offset={[0, 0, 50]}
             />
           </div>
-          <h2 className="text-2xl uppercase text-center text-gray-700">Order Fulfillment Ratio</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Order Fulfillment Ratio</h2>
         </section>
 
         <section className="w-80 mx-auto my-16">
@@ -40,7 +40,7 @@ const PieCharts = () => {
               offset={[0, 0, 0, 80]}
             />
           </div>
-          <h2 className="text-2xl uppercase text-center text-gray-700">Product Categories Ratio</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Product Categories Ratio</h2>
         </section>
 
         <section className="w-80 mx-auto my-16">
@@ -54,7 +54,7 @@ const PieCharts = () => {
               cutout={"70%"}
             />
           </div>
-          <h2 className="text-2xl uppercase text-center text-gray-700">Stock Availability</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Stock Availability</h2>
         </section>
         <section className="w-80 mx-auto my-16">
           <div>
@@ -78,7 +78,7 @@ const PieCharts = () => {
               offset={[20, 30, 20, 30, 80]}
             />
           </div>
-          <h2 className="text-2xl uppercase text-center text-gray-700">Revenue Distribution</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Revenue Distribution</h2>
         </section>
 
         <section className="w-80 mx-auto my-16">
@@ -98,7 +98,7 @@ const PieCharts = () => {
               offset={[0, 0, 50]}
             />
           </div>
-          <h2 className="text-2xl uppercase text-center text-gray-700">Users Age Group</h2>
+          <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Users Age Group</h2>
         </section>
 
         <section className="w-80 mx-auto my-16">

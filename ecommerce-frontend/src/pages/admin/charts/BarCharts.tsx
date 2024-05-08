@@ -18,15 +18,15 @@ const months = [
 
 const BarCharts = () => {
   return (
-    <div className="admin-container min-h-screen bg-gray-50/50">
-      <div className="grid grid-cols-6">
+    <div className="admin-container min-h-screen  bg-gray-50/50">
+      <div className="grid xl:grid-cols-6">
         <div>
           <AdminSidebar />
         </div>
 
-        <main className="chart-container col-span-4 md:col-span-5 overflow-y-auto bg-clip-border rounded-xl bg-white shadow-md p-16">
-          <h1 className="text-3xl font-bold">Bar Charts</h1>
-          <section className="p-20 flex flex-col gap-5">
+        <main className="chart-container col-span-4 md:col-span-5 overflow-y-auto bg-clip-border rounded-xl bg-white shadow-md p-10 md:p-16 m-4">
+          <h1 className="text-md md:text-3xl font-bold">Bar Charts</h1>
+          <section className="p-5 md:p-20 flex flex-col gap-5">
             <BarChart
               data_1={[200, 444, 343, 556, 778, 455, 990]}
               data_2={[300, 144, 433, 655, 237, 755, 190]}
@@ -35,9 +35,9 @@ const BarCharts = () => {
               bgColor_1={`hsl(260,50%,30%)`}
               bgColor_2={`hsl(360,90%,90%)`}
             />
-            <h2 className="text-2xl uppercase text-center text-gray-700">Top Selling Products & Top Customers</h2>
+            <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Top Selling Products & Top Customers</h2>
           </section>
-          <section className="p-20 flex flex-col gap-5">
+          <section className="p-5 md:p-20 flex flex-col gap-5">
             <BarChart
               horizontal={true}
               data_1={[
@@ -50,7 +50,7 @@ const BarCharts = () => {
               bgColor_2=""
               labels={months}
             />
-            <h2 className="text-2xl uppercase text-center text-gray-700">Orders throughout the year</h2>
+            <h2 className="text-md md:text-2xl uppercase text-center text-gray-700">Orders throughout the year</h2>
           </section>
         </main>
       </div>
