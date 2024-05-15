@@ -324,3 +324,7 @@ span {
   color: white;
   border-radius: 10px;
 }
+
+.carousel-image {
+  transition: opacity 1s ease-in-out; /* Increase the transition duration to 1 second */
+}
