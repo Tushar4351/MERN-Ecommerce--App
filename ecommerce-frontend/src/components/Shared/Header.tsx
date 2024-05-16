@@ -13,8 +13,8 @@ import {
 import { Button } from "../ui/button";
 
 const user = {
-  _id: "gdfg",
-  role: "admin",
+  _id: "rtgesge",
+  role: "",
 };
 
 const Header = () => {
@@ -83,11 +83,12 @@ const Header = () => {
                     </Link>
                   )}
 
-                  <DropdownMenuItem>Orders</DropdownMenuItem>
                   <DropdownMenuItem>
-                    
+                    <Link to="/orders">Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
                     <button className="flex justify-center items-center space-x-2">
-                    <span>Logout</span> <LuLogOut className="w-4 h-4" /> 
+                      <span>Logout</span> <LuLogOut className="w-4 h-4" />
                     </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

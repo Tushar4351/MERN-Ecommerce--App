@@ -3,9 +3,16 @@ import { lazy, Suspense } from "react"; //Lazy()So that if we are not in that pa
 import Loader from "./components/Shared/Loader";
 import Header from "./components/Shared/Header";
 
+
+
+
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
+const Shipping = lazy(() => import("./pages/Shipping"));
+const Login = lazy(() => import("./pages/Login"));
+const Orders = lazy(() => import("./pages/Orders"));
+const OrderDetails = lazy(() => import("./pages/OrderDetails"));
 
 // Admin Routes Importing
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -43,6 +50,15 @@ const App = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
 
+
+          <Route path="/login" element={<Login />} />
+          {/* Logged In User Routes */}
+          <Route>
+            <Route path="/shipping" element={<Shipping />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/order/:id" element={<OrderDetails />} />
+          </Route>
+
           {/* Admin Routes */}
 
           <Route path="/admin/dashboard" element={<Dashboard />} />
@@ -61,7 +77,10 @@ const App = () => {
           {/* Management */}
           <Route path="/admin/product/new" element={<NewProduct />} />
           <Route path="/admin/product/:id" element={<ProductManagement />} />
-          <Route path="/admin/transaction/:id" element={<TransactionManagement />}/>
+          <Route
+            path="/admin/transaction/:id"
+            element={<TransactionManagement />}
+          />
         </Routes>
       </Suspense>
     </Router>
