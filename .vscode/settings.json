@@ -1,5 +1,5 @@
 {
     "C_Cpp.autocompleteAddParentheses": true,
-    "CodeGPT.Autocomplete.suggestionDelay": 3000,
+    "CodeGPT.Autocomplete.suggestionDelay": 1000,
     "CodeGPT.Autocomplete.enabled": true
 }

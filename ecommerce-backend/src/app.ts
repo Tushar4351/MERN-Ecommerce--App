@@ -1,18 +1,27 @@
 import express from "express";
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
-
+import NodeCache from "node-cache";
 //importing routes
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/products.route.js";
+import orderRoute from "./routes/order.route.js";
+import { config } from "dotenv";
+import morgan from "morgan";
 
-const port = 4000;
-connectDB();
+config({
+  path: "./.env",
+});
+
+const port = process.env.PORT || 4000;
+const mongoURI = process.env.MONGO_URI || "";
+connectDB(mongoURI);
+
+export const myCache = new NodeCache();
 const app = express();
 
 app.use(express.json());
-
-console.log("Setting up routes");
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   console.log("Received request for /");
@@ -23,12 +32,10 @@ app.get("/:universalURL", (req, res) => {
   res.send("404 URL NOT FOUND");
 });
 
-
 //using routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
-
-
+app.use("/api/v1/order", orderRoute);
 
 app.use("/uploads", express.static("uploads"));
 app.use(errorMiddleware);
