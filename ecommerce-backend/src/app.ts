@@ -2,12 +2,14 @@ import express from "express";
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
+import { config } from "dotenv";
+import morgan from "morgan";
 //importing routes
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/products.route.js";
 import orderRoute from "./routes/order.route.js";
-import { config } from "dotenv";
-import morgan from "morgan";
+import paymentRoute from "./routes/payment.route.js";
+
 
 config({
   path: "./.env",
@@ -36,6 +38,8 @@ app.get("/:universalURL", (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
+app.use("/api/v1/payment", paymentRoute);
+
 
 app.use("/uploads", express.static("uploads"));
 app.use(errorMiddleware);
