@@ -4,6 +4,7 @@ import { errorMiddleware } from "./middlewares/error.js";
 import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 //importing routes
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/products.route.js";
@@ -22,7 +23,8 @@ connectDB(mongoURI);
 export const myCache = new NodeCache();
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); //allows us to parse incoming requests:req.body
+app.use(cookieParser()); // allows us to parse incoming cookies
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
@@ -40,7 +42,6 @@ app.use("/api/v1/product", productRoute);
 app.use("/api/v1/order", orderRoute);
 app.use("/api/v1/payment", paymentRoute);
 app.use("/api/v1/dashboard", dashboardRoute);
-
 
 app.use("/uploads", express.static("uploads"));
 app.use(errorMiddleware);

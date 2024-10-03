@@ -5,13 +5,20 @@ interface Iuser extends Document {
   _id: string;
   photo: string;
   name: string;
+  lastLogin: Date;
   email: string;
+  password: string;
   role: "admin" | "user";
   gender: "male" | "female";
   dob: Date;
   createdAt: Date;
   updatedAt: Date;
   age: number;
+  isVerified: boolean;
+  verificationToken: any;
+  verificationTokenExpiresAt: any;
+  resetPasswordToken: any;
+  resetPasswordExpiresAt: any;
 }
 
 const userSchema = new mongoose.Schema(
@@ -19,11 +26,19 @@ const userSchema = new mongoose.Schema(
     _id: { type: String, required: [true, "Please enter ID"] },
     photo: { type: String, required: [true, "Please add photo"] },
     name: { type: String, required: [true, "Please enter name"] },
+    lastLogin: {
+      type: Date,
+      default: Date.now,
+    },
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: [true, "Email already exists"],
       validate: validator.default.isEmail,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     role: { type: String, enum: ["admin", "user"], default: "user" },
     gender: {
@@ -32,7 +47,16 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please enter gender"],
     },
     dob: { type: Date, required: [true, "Please enter date of birth"] },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    resetPasswordToken: String,
+    resetPasswordExpiresAt: Date,
+    verificationToken: String,
+    verificationTokenExpiresAt: Date,
   },
+
   { timestamps: true }
 );
 

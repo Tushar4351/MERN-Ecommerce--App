@@ -120,18 +120,18 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
       0
     );
 
-    const changePercent = {
-      revenue: calculatePercentage(thisMonthRevenue, lastMonthRevenue),
-      product: calculatePercentage(
-        thisMonthProducts.length,
-        lastMonthProducts.length
-      ),
-      user: calculatePercentage(thisMonthUsers.length, lastMonthUsers.length),
-      order: calculatePercentage(
-        thisMonthOrders.length,
-        lastMonthOrders.length
-      ),
-    };
+    // const changePercent = {
+    //   revenue: calculatePercentage(thisMonthRevenue, lastMonthRevenue),
+    //   product: calculatePercentage(
+    //     thisMonthProducts.length,
+    //     lastMonthProducts.length
+    //   ),
+    //   user: calculatePercentage(thisMonthUsers.length, lastMonthUsers.length),
+    //   order: calculatePercentage(
+    //     thisMonthOrders.length,
+    //     lastMonthOrders.length
+    //   ),
+    // };
 
     const revenue = allOrders.reduce(
       (total, order) => total + (order.total || 0),
@@ -158,10 +158,10 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
       }
     });
 
-    const categoryCount = await getInventories({
-      categories,
-      productsCount,
-    });
+    // const categoryCount = await getInventories({
+    //   categories,
+    //   productsCount,
+    // });
 
     const userRatio = {
       male: usersCount - femaleUsersCount,
@@ -176,17 +176,17 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
       status: i.status,
     }));
 
-    stats = {
-      categoryCount,
-      changePercent,
-      count,
-      chart: {
-        order: orderMonthCounts,
-        revenue: orderMonthyRevenue,
-      },
-      userRatio,
-      latestTransaction: modifiedLatestTransaction,
-    };
+    // stats = {
+    //   categoryCount,
+    //   changePercent,
+    //   count,
+    //   chart: {
+    //     order: orderMonthCounts,
+    //     revenue: orderMonthyRevenue,
+    //   },
+    //   userRatio,
+    //   latestTransaction: modifiedLatestTransaction,
+    // };
 
     myCache.set(key, JSON.stringify(stats));
   }

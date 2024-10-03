@@ -2,11 +2,14 @@ import { NextFunction, Request, Response } from "express";
 
 export interface NewUserRequestBody {
   name: string;
+  lastLogin: Date;
   email: string;
+  password: string;
   photo: string;
   gender: string;
   _id: string;
   dob: Date;
+  isVerified: boolean;
 }
 
 export interface NewProductRequestBody {
@@ -21,7 +24,6 @@ export type ControllerType = (
   res: Response,
   next: NextFunction
 ) => Promise<void | Response<any, Record<string, any>>>;
-
 
 export type SearchRequestQuery = {
   search?: string;
