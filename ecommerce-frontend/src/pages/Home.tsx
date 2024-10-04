@@ -1,18 +1,19 @@
-import HomeCarousel from "@/components/Shared/HomeCarousel";
 import ProductCard from "@/components/Shared/ProductCard";
 import { Link } from "react-router-dom";
-
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/Shared/Footer";
 import About from "@/components/Shared/About";
 import Testimonials from "@/components/Shared/Testimonials";
+import video from "../assets/branding.mp4";
+
 const Home = () => {
   const addToCartHandler = () => {};
 
   return (
     <div>
-      <section>
-        <HomeCarousel />
+      <section >
+        <video autoPlay muted loop playsInline className="w-full">
+          <source src={video} type="video/mp4" />
+        </video>
       </section>
 
       <section className="mt-20 p-5">
@@ -30,6 +31,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
       <section className="m-5">
         <div className="flex flex-wrap">
           <ProductCard
