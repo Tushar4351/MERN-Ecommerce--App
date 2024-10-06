@@ -1,10 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react"; //Lazy()So that if we are not in that page that page wont load //<Suspense> lets you display a fallback until its children have finished loading.
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Loader from "./components/Shared/Loader";
 import Header from "./components/Shared/Header";
-
-
-
 
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
@@ -20,7 +22,7 @@ const Products = lazy(() => import("./pages/admin/Products"));
 const Customers = lazy(() => import("./pages/admin/Customers"));
 const Transaction = lazy(() => import("./pages/admin/Transaction"));
 
-//Managenment
+// Management
 const NewProduct = lazy(() => import("./pages/admin/management/NewProduct"));
 const ProductManagement = lazy(
   () => import("./pages/admin/management/ProductManagement")
@@ -29,12 +31,12 @@ const TransactionManagement = lazy(
   () => import("./pages/admin/management/TransactionManagement")
 );
 
-//charts
+// Charts
 const BarCharts = lazy(() => import("./pages/admin/charts/BarCharts"));
 const LineCharts = lazy(() => import("./pages/admin/charts/LineCharts"));
 const PieCharts = lazy(() => import("./pages/admin/charts/PieCharts"));
 
-//Apps
+// Apps
 const Coupon = lazy(() => import("./pages/admin/apps/Coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/apps/Stopwatch"));
 const Toss = lazy(() => import("./pages/admin/apps/Toss"));
@@ -42,33 +44,44 @@ const Toss = lazy(() => import("./pages/admin/apps/Toss"));
 const App = () => {
   return (
     <Router>
+      <AppContent />
+    </Router>
+  );
+};
+
+const AppContent = () => {
+  const location = useLocation();
+  const isTransparent = location.pathname === "/login";
+
+  return (
+    <>
       {/* Header Section */}
-      <Header />
+      {!isTransparent && <Header />}
+
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
 
-
           <Route path="/login" element={<Login />} />
+
           {/* Logged In User Routes */}
-          <Route>
-            <Route path="/shipping" element={<Shipping />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/order/:id" element={<OrderDetails />} />
-          </Route>
+          <Route path="/shipping" element={<Shipping />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/order/:id" element={<OrderDetails />} />
 
           {/* Admin Routes */}
-
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/product" element={<Products />} />
           <Route path="/admin/customer" element={<Customers />} />
           <Route path="/admin/transaction" element={<Transaction />} />
+
           {/* Charts */}
           <Route path="/admin/chart/bar" element={<BarCharts />} />
           <Route path="/admin/chart/pie" element={<PieCharts />} />
           <Route path="/admin/chart/line" element={<LineCharts />} />
+
           {/* Apps */}
           <Route path="/admin/app/coupon" element={<Coupon />} />
           <Route path="/admin/app/stopwatch" element={<Stopwatch />} />
@@ -83,7 +96,7 @@ const App = () => {
           />
         </Routes>
       </Suspense>
-    </Router>
+    </>
   );
 };
 

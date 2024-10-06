@@ -29,8 +29,7 @@ const Header = () => {
   const closeSidebar = () => setIsOpen(false);
   console.log("Current pathname:", location.pathname);
   // Set background color based on pathname
-  const isTransparent =
-    location.pathname === "/" || location.pathname === "/login";
+  const isTransparent = location.pathname === "/";
 
   const navClass = isTransparent
     ? "bg-transparent fixed w-full z-20 top-0 start-0 hover:border-b hover:border-gray-200 hover:bg-white transition-colors duration-300 ease-in-out"

@@ -12,9 +12,11 @@ import {
 } from "react-icons/hi";
 import login from "../assets/login.jpg";
 import { Link } from "react-router-dom";
+import PasswordStrengthMeter from "@/components/Shared/PasswordStrengthMeter";
 
 const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(true);
+  const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -96,7 +98,7 @@ const AuthForm = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <div className="flex-1 flex flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+      <div className="flex-1 flex flex-col justify-center px-4 py-10 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="flex justify-between">
             <button className="rounded-full border-2 py-1 px-2 font-semibold">
@@ -113,7 +115,7 @@ const AuthForm = () => {
             </p>
           </div>
 
-          <div className="mt-5">
+          <div className="mt-10">
             <h2 className="text-3xl font-bold text-gray-900">
               {isSignUp ? "Sign Up" : "Sign In"}
             </h2>
@@ -188,25 +190,15 @@ const AuthForm = () => {
                   id="password"
                   name="password"
                   type="password"
-                  placeholder="••••••"
+                  placeholder="Password"
                   required
-                  value={formData.password}
-                  onChange={handleInputChange}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm"
                 />
-                {isSignUp && (
-                  <div className="mt-1">
-                    <p className="text-xs text-gray-500">Least 8 characters</p>
-                    <p className="text-xs text-green-500">
-                      Least one number (0-9) or a symbol
-                    </p>
-                    <p className="text-xs text-green-500">
-                      Lowercase (a-z) and uppercase (A-Z)
-                    </p>
-                  </div>
-                )}
+                {isSignUp && <PasswordStrengthMeter password={password} />}
               </div>
-
+{/* 
               {isSignUp && (
                 <div className="relative">
                   <HiOutlineLockClosed className="absolute top-3 left-3 text-gray-400" />
@@ -221,7 +213,7 @@ const AuthForm = () => {
                     className="pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm"
                   />
                 </div>
-              )}
+              )} */}
 
               <div className="mt-6 gap-2 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button
