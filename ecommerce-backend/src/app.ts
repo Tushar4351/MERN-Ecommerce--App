@@ -5,6 +5,8 @@ import NodeCache from "node-cache";
 import { config } from "dotenv";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import Stripe from "stripe";
+
 //importing routes
 import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/products.route.js";
@@ -18,8 +20,11 @@ config({
 
 const port = process.env.PORT || 4000;
 const mongoURI = process.env.MONGO_URI || "";
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
+
 connectDB(mongoURI);
 
+export const stripe = new Stripe(stripeSecretKey)
 export const myCache = new NodeCache();
 const app = express();
 
