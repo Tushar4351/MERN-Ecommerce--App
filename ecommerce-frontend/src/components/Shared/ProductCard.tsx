@@ -19,30 +19,37 @@ const ProductCard = ({
   handler,
 }: ProductsProps) => {
   return (
-    <div className="relative max-w-sm min-w-[340px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
-      <div className="overflow-x-hidden rounded-2xl relative">
-        <img
-          className="h-40 rounded-2xl w-full object-cover"
-          //{`${server}/${photo}`}
-          src={photo}
-          alt={name}
-          //   src="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
-          //   alt="Product"
-        />
-        <button
-          onClick={() => handler()}
-          className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group"
-        >
-          <BsCart3 className="h-6 w-6 group-hover:opacity-50 opacity-70" />
-        </button>
-      </div>
-      <div className="mt-4 pl-2 mb-2 flex justify-between">
-        <div>
-          <p className="text-lg font-semibold text-gray-900 mb-0">{name}</p>
-          <p className="text-md text-green-150 mt-0 font-semibold">₹{price}</p>
+   
+      <div className="group relative">
+        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+          <img
+            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+            //{`${server}/${photo}`}
+            src={photo}
+            alt={name}
+          />
+          <button
+            onClick={() => handler()}
+            className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group"
+          >
+            <BsCart3 className="h-6 w-6 group-hover:opacity-50 opacity-70" />
+          </button>
+        </div>
+        <div className="mt-4 flex justify-between">
+          <div>
+            <h3 className="text-sm text-gray-700">
+              <a href="#">
+                <span aria-hidden="true" className="absolute inset-0" />
+                <p className="text-lg font-semibold text-gray-900 mb-0">
+                  {name}
+                </p>
+              </a>
+            </h3>
+          </div>
+          <p className="text-sm font-medium text-gray-900">₹{price}</p>
         </div>
       </div>
-    </div>
+   
   );
 };
 
