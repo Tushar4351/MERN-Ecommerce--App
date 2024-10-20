@@ -1,74 +1,80 @@
-import React from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 const Footer = () => {
   return (
-    <footer className=" max-w-7xl mx-auto w-full py-12 ">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-          <Link to={"/"} className="flex items-center ">
-              <img src={logo} className="h-8 mb-3 rounded-lg" alt="FlowBite Logo" />
-            </Link>
-            <p className="text-gray-400">Your trusted fashion companion</p>
-          </div>
+    <section className="bg-black-150">
+      <footer className="max-w-7xl mx-auto w-full py-12 ">
+        <div className="container mx-auto px-2">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-32">
+            <div>
+              <Link to={"/"} className="flex items-center ">
+                <img
+                  src={logo}
+                  className="h-6 mb-3 rounded-md"
+                  alt="FlowBite Logo"
+                />
+              </Link>
+              <p className="text-gray-400">Your trusted fashion<br/>
+                companion</p>
+            </div>
 
-          <div>
-            <h4 className="font-bold text-white mb-4">NAVIGATION</h4>
-            <ul className="space-y-2">
-              {["Home", "Shop", "About", "Contact"].map((item) => (
-                <li key={item}>
-                  <Link
-                    to={`/${item.toLowerCase()}`}
-                    className="text-gray-400 hover:text-gray-200"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div>
+              <h4 className="font-bold text-white mb-4">NAVIGATION</h4>
+              <ul className="space-y-2">
+                {["Home", "Search", "About", "Contact"].map((item) => (
+                  <li key={item}>
+                    <Link
+                      to={`/${item.toLowerCase()}`}
+                      className="text-gray-400 hover:text-gray-200"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-bold text-white mb-4">CATEGORIES</h4>
-            <ul className="space-y-2">
-              {["Men", "Women", "Kids"].map((item) => (
-                <li key={item}>
-                  <Link
-                    to={`/category/${item.toLowerCase()}`}
-                    className="text-gray-400 hover:text-gray-200"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div>
+              <h4 className="font-bold text-white mb-4">CATEGORIES</h4>
+              <ul className="space-y-2">
+                {["Men", "Women", "Kids"].map((item) => (
+                  <li key={item}>
+                    <Link
+                      to={`/category/${item.toLowerCase()}`}
+                      className="text-gray-400 hover:text-gray-200"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div>
-            <div className="flex">
-              <Link to="/facebook">
-                <FaFacebook className="w-6 h-6 text-white hover:text-green-150 ms-5" />
-              </Link>
-              <Link to="/discord">
-                <FaDiscord className=" w-6 h-6 text-white hover:text-green-150 ms-5" />
-              </Link>
-              <Link to="/twitter">
-                <FaTwitter className=" w-6 h-6 text-white hover:text-green-150 ms-5" />
-              </Link>
-              <Link to="/github">
-                <FaGithub className=" w-6 h-6 text-white hover:text-green-150 ms-5" />
-              </Link>
+            <div>
+              <div className="flex">
+                <Link to="/facebook">
+                  <FaFacebook className="w-7 h-7 text-white hover:text-green-150 ms-5" />
+                </Link>
+                <Link to="/discord">
+                  <FaDiscord className=" w-7 h-7 text-white hover:text-green-150 ms-5" />
+                </Link>
+                <Link to="/twitter">
+                  <FaTwitter className="w-7 h-7 text-white hover:text-green-150 ms-5" />
+                </Link>
+                <Link to="/github">
+                  <FaGithub className="w-7 h-7 text-white hover:text-green-150 ms-5" />
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="text-center mt-12 text-white">
-          All Rights Reserved By ©NexCartia
+          <div className="text-center mt-12 text-white">
+            All Rights Reserved By ©NexCartia
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </section>
   );
 };
 

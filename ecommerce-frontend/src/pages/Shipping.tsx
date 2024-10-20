@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Shared/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -18,12 +19,11 @@ const Shipping = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-          <div className="bg-white p-8 rounded-lg shadow-md border">
-         
-        <h1 className="text-2xl text-center font-bold text-gray-800 ">Delivery Information</h1>
-        <h3 className="text-md text-center mb-10">
-          <Link to="/cart" className="text-green-150 underline underline-offset-2">Back to cart</Link>
-        </h3>
+      <div className="p-6">
+        <div className="mt-16">
+          <Breadcrumb pageName="cart" currentPage="Address" />
+        </div>
+
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-700 mb-2">
             Shipping Address

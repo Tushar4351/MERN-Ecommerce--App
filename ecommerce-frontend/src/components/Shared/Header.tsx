@@ -119,7 +119,7 @@ const Header = () => {
             <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
             <li>
               <Link
-                to={"/"}
+                to="/search"
                 className="block py-2 px-3 mt-8 text-white rounded hover:text-green-150 md:p-0"
                 aria-current="page"
               >
@@ -129,7 +129,7 @@ const Header = () => {
             <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
             <li>
               <Link
-                to="#"
+                to="/about"
                 className="block py-2 px-3 mt-8 text-white rounded hover:text-green-150 md:p-0"
               >
                 About
@@ -138,10 +138,19 @@ const Header = () => {
             <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
             <li>
               <Link
-                to="#"
+                to="/contact"
                 className="block py-2 px-3 mt-8 text-white rounded hover:text-green-150 md:p-0"
               >
                 Contact
+              </Link>
+            </li>
+            <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
+            <li>
+              <Link
+                to="/login"
+                className="block py-2 px-3 mt-8 text-white rounded hover:text-green-150 md:p-0"
+              >
+                Sign In / Sign Up
               </Link>
             </li>
             <Separator className="opacity-20 text-[#DEDEDE] mt-6" />

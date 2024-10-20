@@ -7,8 +7,13 @@ import {
 import { lazy, Suspense } from "react";
 import Loader from "./components/Shared/Loader";
 import Header from "./components/Shared/Header";
+import NewsLetter from "./components/Shared/NewsLetter";
+import Footer from "./components/Shared/Footer";
+import ScrollProvider from "./components/Shared/ScrollProvider";
 
 const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
 const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Shipping = lazy(() => import("./pages/Shipping"));
@@ -43,9 +48,11 @@ const Toss = lazy(() => import("./pages/admin/apps/Toss"));
 
 const App = () => {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ScrollProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </ScrollProvider>
   );
 };
 
@@ -62,6 +69,8 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
 
           <Route path="/login" element={<Login />} />
@@ -96,6 +105,9 @@ const AppContent = () => {
           />
         </Routes>
       </Suspense>
+
+      <NewsLetter />
+      <Footer />
     </>
   );
 };

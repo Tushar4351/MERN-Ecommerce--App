@@ -1,14 +1,12 @@
 import ProductCard from "@/components/Shared/ProductCard";
 import { Link } from "react-router-dom";
-import Footer from "@/components/Shared/Footer";
-import About from "@/components/Shared/About";
-import Testimonials from "@/components/Shared/Testimonials";
 import video from "../assets/branding.mp4";
 import { WobbleCard } from "@/components/Shared/WobbleCard";
 import { Button } from "@/components/ui/button";
 import { DirectionAwareHover } from "@/components/Shared/DirectionAwareHover";
 import men from "/men.png";
 import women from "/women.png";
+
 
 const Home = () => {
   const addToCartHandler = () => {};
@@ -188,25 +186,7 @@ const Home = () => {
       {/* <section>
         <Testimonials />
       </section>  */}
-      <section className="mt-20">
-        <div className="bg-green-150 p-6 md:p-12">
-          <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
-            <div className="text-white mb-4 md:mb-0">
-              <h2 className="text-2xl md:text-4xl font-bold">
-                Sign up to our newsletter
-              </h2>
-              <p className="text-xl md:text-2xl">& get 20% off</p>
-            </div>
-            <button className="bg-white text-black px-8 py-3 rounded hover:bg-gray-100 transition-colors">
-              SIGN UP FOR FREE
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-black-150">
-        <Footer />
-      </section>
+      
     </div>
   );
 };

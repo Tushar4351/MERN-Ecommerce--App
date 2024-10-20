@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Shared/Breadcrumb";
 import CartItemCard from "@/components/Shared/CartItemCard";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -7,8 +8,7 @@ import { Link } from "react-router-dom";
 const cartItems = [
   {
     productId: "dfwesdfefe",
-    photo:
-      "https://m.media-amazon.com/images/I/719C6bJv8jL._SL1500_.jpg",
+    photo: "https://m.media-amazon.com/images/I/719C6bJv8jL._SL1500_.jpg",
 
     name: "MackBook",
     price: 3000,
@@ -43,22 +43,18 @@ const Cart = () => {
   return (
     <section className="bg-white  antialiased py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-        <h2 className="text-xl text-center font-semibold text-gray-900 sm:text-2xl">
-          Shopping Cart
-        </h2>
-        <h3 className="text-md text-center">
-          <Link to="/products" className="text-green-150 underline underline-offset-2">Back to shopping</Link>
-        </h3>
+        <Breadcrumb pageName="Home" currentPage="Shopping Cart" />
 
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
           <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
             <div className="space-y-6">
-            {cartItems.length > 0 ? ( cartItems.map((i, idx) => (
-                <CartItemCard key={idx} cartItem={i} />
+              {cartItems.length > 0 ? (
+                cartItems.map((i, idx) => (
+                  <CartItemCard key={idx} cartItem={i} />
                 ))
-                ) : (
-                  <h1 className="text-center text-gray-900">No Items Added</h1>
-                )}
+              ) : (
+                <h1 className="text-center text-gray-900">No Items Added</h1>
+              )}
             </div>
           </div>
 
