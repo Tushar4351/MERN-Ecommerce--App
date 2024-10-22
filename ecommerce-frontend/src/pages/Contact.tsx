@@ -1,6 +1,6 @@
 import Breadcrumb from "@/components/Shared/Breadcrumb";
+import FAQ from "@/components/Shared/FAQ";
 import { Button } from "@/components/ui/button";
-
 
 const Contact = () => {
   return (
@@ -46,6 +46,10 @@ const Contact = () => {
             </Button>
           </form>
         </div>
+      </div>
+      <div className="p-6">
+        <h1 className="uppercase text-center my-12 text-black-heading font-semibold text-3xl sm:text-5xl">frequently asked</h1>
+        <FAQ />
       </div>
     </div>
   );

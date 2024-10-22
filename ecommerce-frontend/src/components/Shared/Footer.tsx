@@ -15,8 +15,11 @@ const Footer = () => {
                   alt="FlowBite Logo"
                 />
               </Link>
-              <p className="text-gray-400">Your trusted fashion<br/>
-                companion</p>
+              <p className="text-gray-400">
+                Your trusted fashion
+                <br />
+                companion
+              </p>
             </div>
 
             <div>
@@ -25,7 +28,7 @@ const Footer = () => {
                 {["Home", "Search", "About", "Contact"].map((item) => (
                   <li key={item}>
                     <Link
-                      to={`/${item.toLowerCase()}`}
+                      to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
                       className="text-gray-400 hover:text-gray-200"
                     >
                       {item}

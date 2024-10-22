@@ -7,7 +7,6 @@ import { DirectionAwareHover } from "@/components/Shared/DirectionAwareHover";
 import men from "/men.png";
 import women from "/women.png";
 
-
 const Home = () => {
   const addToCartHandler = () => {};
 
@@ -169,9 +168,11 @@ const Home = () => {
           <h1 className="text-black-heading uppercase text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sora-bold">
             Shop now
           </h1>
-          <Button className="bg-green-150 hover:bg-green-150/90 sm:h-12 sm:w-44 text-md md:text-2xl uppercase">
-            Shop
-          </Button>
+          <Link to="/search">
+            <Button className="bg-green-150 hover:bg-green-150/90 sm:h-12 sm:w-44 text-md md:text-2xl uppercase">
+              Shop
+            </Button>
+          </Link>
         </div>
         <div className="md:h-[40rem] relative flex items-center justify-center gap-4 max-w-7xl mx-auto w-full">
           <DirectionAwareHover imageUrl={men}>
@@ -186,7 +187,6 @@ const Home = () => {
       {/* <section>
         <Testimonials />
       </section>  */}
-      
     </div>
   );
 };

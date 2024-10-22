@@ -3,6 +3,7 @@ import { ReactElement,  useState } from "react";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import TableHOC from "../components/Shared/admin/TableHOC";
+import Breadcrumb from "@/components/Shared/Breadcrumb";
 
 
 
@@ -67,8 +68,10 @@ const Orders = () => {
     rows.length > 6
   )();
   return (
-    <div className="container max-w-7xl mt-16 w-full m-auto overflow-auto">
-      <h1 className="text-2xl font-bold text-start mb-4">My Orders</h1>
+    <div className="container max-w-7xl w-full overflow-auto">
+      <div className="mt-12">
+        <Breadcrumb pageName="Home" currentPage="My Orders" />
+      </div>
       {Table}
     </div>
   );
