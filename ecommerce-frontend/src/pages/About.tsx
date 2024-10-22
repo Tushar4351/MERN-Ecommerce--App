@@ -21,13 +21,13 @@ const features: Feature[] = [
     icon: <LiaShippingFastSolid className="text-4xl text-gray-700" />,
     title: "Free shipping",
     description:
-      "Enjoy the convenience of free shipping on all orders, nationwide",
+      "Enjoy the convenience of free shipping with fast delivery on all orders, nationwide.",
   },
   {
     icon: <FaRegClock className="text-4xl text-gray-700" />,
     title: "Return policy",
     description:
-      "Your satisfaction is our priority. Return any product you are not satisfied with.",
+      "Your satisfaction is our top most priority. Return any product you are not satisfied with.",
   },
   {
     icon: <FaRegCreditCard className="text-4xl text-gray-700" />,
@@ -70,7 +70,7 @@ const About: React.FC = () => {
           a harmonious blend of sophistication, versatility, and modernity,
           carefully curated to enhance your personal expression. We believe that
           fashion should empower, inspire, and reflect the unique narrative of
-          every individual. Serrena is not just about clothing; it's about
+          every individual. <span className="text-green-150">NexCartia is not just about clothing;</span> it's about
           embracing a lifestyle that embraces the artistry of fashion and the
           poetry of self-expression.
         </p>

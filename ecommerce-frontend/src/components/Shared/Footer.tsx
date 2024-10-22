@@ -38,7 +38,7 @@ const Footer = () => {
             <div>
               <h4 className="font-bold text-white mb-4">CATEGORIES</h4>
               <ul className="space-y-2">
-                {["Men", "Women", "Kids"].map((item) => (
+                {["Men", "Women"].map((item) => (
                   <li key={item}>
                     <Link
                       to={`/category/${item.toLowerCase()}`}
