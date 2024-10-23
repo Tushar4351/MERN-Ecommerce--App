@@ -13,6 +13,9 @@ import {
 import login from "../assets/login.jpg";
 import { Link } from "react-router-dom";
 import PasswordStrengthMeter from "@/components/Shared/PasswordStrengthMeter";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase";
+import { toast } from "sonner";
 
 const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -95,7 +98,15 @@ const AuthForm = () => {
     //   console.error('Signin error:', error);
     // }
   };
-
+  const googleLoginHandler = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const { user } = await signInWithPopup(auth, provider);
+      console.log(user);
+    } catch (error) {
+      toast("Sign Up Failed");
+    }
+  };
   return (
     <div className="flex min-h-screen bg-white">
       <div className="flex-1 flex flex-col justify-center px-4 py-10 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
@@ -198,7 +209,7 @@ const AuthForm = () => {
                 />
                 {isSignUp && <PasswordStrengthMeter password={password} />}
               </div>
-{/* 
+              {/* 
               {isSignUp && (
                 <div className="relative">
                   <HiOutlineLockClosed className="absolute top-3 left-3 text-gray-400" />
@@ -237,6 +248,7 @@ const AuthForm = () => {
                   </Button>
                   <Button
                     type="button"
+                    onClick={googleLoginHandler}
                     variant="outline"
                     className="inline-flex justify-center items-center w-14 h-14 border border-gray-300 rounded-full shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                   >

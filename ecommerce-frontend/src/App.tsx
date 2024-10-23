@@ -10,6 +10,7 @@ import Header from "./components/Shared/Header";
 import NewsLetter from "./components/Shared/NewsLetter";
 import Footer from "./components/Shared/Footer";
 import ScrollProvider from "./components/Shared/ScrollProvider";
+import { Toaster } from "./components/ui/sonner";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -53,6 +54,7 @@ const App = () => {
       <Router>
         <AppContent />
       </Router>
+      <Toaster />
     </ScrollProvider>
   );
 };

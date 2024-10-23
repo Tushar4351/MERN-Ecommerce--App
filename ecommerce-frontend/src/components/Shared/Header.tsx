@@ -17,7 +17,7 @@ import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
 const user = {
-  _id: "rtgesge",
+  _id: "",
   role: "",
 };
 

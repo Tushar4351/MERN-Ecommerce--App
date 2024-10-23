@@ -13,6 +13,7 @@ import productRoute from "./routes/products.route.js";
 import orderRoute from "./routes/order.route.js";
 import paymentRoute from "./routes/payment.route.js";
 import dashboardRoute from "./routes/adminDashboard.route.js";
+import cors from "cors";
 
 config({
   path: "./.env",
@@ -24,13 +25,14 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
 
 connectDB(mongoURI);
 
-export const stripe = new Stripe(stripeSecretKey)
+export const stripe = new Stripe(stripeSecretKey);
 export const myCache = new NodeCache();
 const app = express();
 
 app.use(express.json()); //allows us to parse incoming requests:req.body
 app.use(cookieParser()); // allows us to parse incoming cookies
 app.use(morgan("dev"));
+app.use(cors());
 
 app.get("/", (req, res) => {
   console.log("Received request for /");
