@@ -3,7 +3,7 @@ import validator from "validator";
 
 interface Iuser extends Document {
   _id: string;
-  photo: string;
+  photo?: string;
   name: string;
   lastLogin: Date;
   email: string;
@@ -24,7 +24,7 @@ interface Iuser extends Document {
 const userSchema = new mongoose.Schema(
   {
     _id: { type: String, required: [true, "Please enter ID"] },
-    photo: { type: String, required: [true, "Please add photo"] },
+    photo: { type: String, required: [false, "Please add photo"] },
     name: { type: String, required: [true, "Please enter name"] },
     lastLogin: {
       type: Date,

@@ -10,7 +10,7 @@ import Header from "./components/Shared/Header";
 import NewsLetter from "./components/Shared/NewsLetter";
 import Footer from "./components/Shared/Footer";
 import ScrollProvider from "./components/Shared/ScrollProvider";
-import { Toaster } from "./components/ui/sonner";
+import { Toaster } from "react-hot-toast";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -53,8 +53,8 @@ const App = () => {
     <ScrollProvider>
       <Router>
         <AppContent />
+        <Toaster position="top-center" />
       </Router>
-      <Toaster />
     </ScrollProvider>
   );
 };

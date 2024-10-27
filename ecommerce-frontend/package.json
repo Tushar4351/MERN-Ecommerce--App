@@ -36,7 +36,8 @@
     "react-table": "^7.8.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.0"
   },
   "devDependencies": {
     "@types/locomotive-scroll": "^4.1.3",

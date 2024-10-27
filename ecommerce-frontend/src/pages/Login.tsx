@@ -10,48 +10,84 @@ import {
   HiOutlineMail,
   HiOutlineLockClosed,
 } from "react-icons/hi";
-import login from "../assets/login.jpg";
-import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import loginImage from "../assets/login.jpg";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "@/components/Shared/PasswordStrengthMeter";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase";
-import { toast } from "sonner";
+import InputLoader from "@/components/Shared/InputLoader";
+import { useSigninMutation, useSingupMutation } from "@/redux/api/userApi";
+import { MessageResponse } from "@/types/api-types";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import toast from "react-hot-toast";
 
-const AuthForm = () => {
+interface FormData {
+  name: string;
+  email: string;
+  gender: string;
+  dateOfBirth: string;
+  password: string;
+}
+
+const initialFormData: FormData = {
+  name: "",
+  email: "",
+  gender: "",
+  dateOfBirth: "",
+  password: "",
+};
+
+const AuthForm: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(true);
-  const [password, setPassword] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    gender: "",
-    dateOfBirth: "",
-    password: "",
-    passwordConfirmation: "",
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [showPassword, setShowPassword] = useState(false);
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
+
+  const [signup, { isLoading: isSignupLoading }] = useSingupMutation();
+  const [signin, { isLoading: isSigninLoading }] = useSigninMutation();
+  const navigate = useNavigate();
 
   const toggleAuthMode = () => {
     setIsSignUp(!isSignUp);
-    // Reset form data when switching modes
-    setFormData({
-      name: "",
-      email: "",
-      gender: "",
-      dateOfBirth: "",
-      password: "",
-      passwordConfirmation: "",
-    });
+    setFormData(initialFormData);
+    setInvalidFields([]);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setInvalidFields((prev) => prev.filter((field) => field !== name));
+
+    if (name === "password") {
+      setShowPassword(value.length > 0);
+    }
   };
 
-  const handleSubmit = async (e) => {
+  const validateForm = (isGoogleSignup: boolean = false) => {
+    const invalidFieldsList: string[] = [];
+
+    if (isSignUp || isGoogleSignup) {
+      if (!formData.name && !isGoogleSignup) invalidFieldsList.push("name");
+      if (!formData.gender) invalidFieldsList.push("gender");
+      if (!formData.dateOfBirth) invalidFieldsList.push("dateOfBirth");
+    }
+
+    if (!isGoogleSignup) {
+      if (!formData.email) invalidFieldsList.push("email");
+      if (!formData.password) invalidFieldsList.push("password");
+    }
+
+    setInvalidFields(invalidFieldsList);
+    return invalidFieldsList.length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     if (isSignUp) {
       await handleSignUp();
     } else {
@@ -60,55 +96,92 @@ const AuthForm = () => {
   };
 
   const handleSignUp = async () => {
-    // Here you would typically send a request to your backend API
-    console.log("Signing up with:", formData);
-    // Example API call (uncomment and modify as needed):
-    // try {
-    //   const response = await fetch('/api/signup', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(formData)
-    //   });
-    //   const data = await response.json();
-    //   console.log('Signup successful:', data);
-    // } catch (error) {
-    //   console.error('Signup error:', error);
-    // }
+    try {
+      const response = await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        photo: "null",
+        gender: formData.gender,
+        role: "user",
+        dob: formData.dateOfBirth,
+        _id: uuidv4(),
+      }).unwrap();
+
+      toast.success(response.message);
+      navigate("/");
+      setFormData(initialFormData);
+    } catch (error) {
+      const err = error as FetchBaseQueryError;
+      const message = (err.data as MessageResponse).message;
+      toast.error(message || "Sign Up Failed");
+    }
   };
 
   const handleSignIn = async () => {
-    // Here you would typically send a request to your backend API
-    console.log("Signing in with:", {
-      email: formData.email,
-      password: formData.password,
-    });
-    // Example API call (uncomment and modify as needed):
-    // try {
-    //   const response = await fetch('/api/signin', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({
-    //       email: formData.email,
-    //       password: formData.password,
-    //     })
-    //   });
-    //   const data = await response.json();
-    //   console.log('Signin successful:', data);
-    // } catch (error) {
-    //   console.error('Signin error:', error);
-    // }
+    try {
+      const response = await signin({
+        email: formData.email,
+        password: formData.password,
+      }).unwrap();
+
+      toast.success(response.message);
+      navigate("/");
+      setFormData(initialFormData);
+    } catch (error) {
+      const err = error as FetchBaseQueryError;
+      const message = (err.data as MessageResponse).message;
+      toast.error(message || "Sign In Failed");
+    }
   };
+
   const googleLoginHandler = async () => {
+    if (!validateForm(true)) {
+      toast.error("Please fill in required fields (Gender and Date of Birth)");
+      return;
+    }
+
     try {
       const provider = new GoogleAuthProvider();
       const { user } = await signInWithPopup(auth, provider);
-      console.log(user);
+
+      const response = await signup({
+        name: user.displayName!,
+        email: user.email!,
+        password: user.uid,
+        photo: user.photoURL!,
+        gender: formData.gender,
+        role: "user",
+        dob: formData.dateOfBirth,
+        _id: user.uid,
+      }).unwrap();
+
+      toast.success(response.message);
+      navigate("/");
+      setFormData(initialFormData);
     } catch (error) {
-      toast("Sign Up Failed");
+      const err = error as FetchBaseQueryError;
+      const message = (err.data as MessageResponse)?.message;
+      toast.error(message || "Google Sign Up Failed");
     }
   };
+
+  const isLoading = isSignUp ? isSignupLoading : isSigninLoading;
+
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex">
+      <style>
+        {`
+          @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+          }
+          .shake {
+            animation: shake 0.5s ease-in-out;
+          }
+        `}
+      </style>
       <div className="flex-1 flex flex-col justify-center px-4 py-10 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="flex justify-between">
@@ -145,10 +218,14 @@ const AuthForm = () => {
                     name="name"
                     type="text"
                     placeholder="Daniel Ahmadi"
-                    required={isSignUp}
+                    required
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="pl-10 appearance-none block w-full border-b border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  sm:text-sm"
+                    className={`pl-10 appearance-none block w-full border-b border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
+                      invalidFields.includes("name")
+                        ? "shake border-red-500"
+                        : ""
+                    }`}
                   />
                 </div>
               )}
@@ -163,7 +240,11 @@ const AuthForm = () => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="pl-10 appearance-none block w-full  border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  sm:text-sm"
+                  className={`pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
+                    invalidFields.includes("email")
+                      ? "shake border-red-500"
+                      : ""
+                  }`}
                 />
               </div>
 
@@ -174,8 +255,13 @@ const AuthForm = () => {
                     <select
                       name="gender"
                       value={formData.gender}
-                      className="w-full pl-10 appearance-none block border-2 py-2  rounded-md text-sm text-gray-500 outline-none"
                       onChange={handleInputChange}
+                      required
+                      className={`w-full pl-10 appearance-none block border py-2 border-gray-300 rounded-md text-gray-500 shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
+                        invalidFields.includes("gender")
+                          ? "shake border-red-500"
+                          : ""
+                      }`}
                     >
                       <option value="">Select Gender</option>
                       <option value="male">Male</option>
@@ -186,10 +272,15 @@ const AuthForm = () => {
                     <CiCalendarDate className="absolute top-3 left-3 text-gray-500" />
                     <Input
                       name="dateOfBirth"
-                      className="pl-10 appearance-none block w-full  border border-gray-300 rounded-md shadow-sm text-gray-500 focus:outline-none sm:text-sm"
                       type="date"
+                      required
                       value={formData.dateOfBirth}
                       onChange={handleInputChange}
+                      className={`pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm text-gray-500 focus:outline-none sm:text-sm ${
+                        invalidFields.includes("dateOfBirth")
+                          ? "shake border-red-500"
+                          : ""
+                      }`}
                     />
                   </div>
                 </>
@@ -203,35 +294,32 @@ const AuthForm = () => {
                   type="password"
                   placeholder="Password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className={`pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm ${
+                    invalidFields.includes("password")
+                      ? "shake border-red-500"
+                      : ""
+                  }`}
                 />
-                {isSignUp && <PasswordStrengthMeter password={password} />}
+                {isSignUp && showPassword && (
+                  <PasswordStrengthMeter password={formData.password} />
+                )}
               </div>
-              {/* 
-              {isSignUp && (
-                <div className="relative">
-                  <HiOutlineLockClosed className="absolute top-3 left-3 text-gray-400" />
-                  <Input
-                    id="passwordConfirmation"
-                    name="passwordConfirmation"
-                    type="password"
-                    placeholder="Re-Type Password"
-                    required={isSignUp}
-                    value={formData.passwordConfirmation}
-                    onChange={handleInputChange}
-                    className="pl-10 appearance-none block w-full border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm"
-                  />
-                </div>
-              )} */}
 
               <div className="mt-6 gap-2 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <Button
                   type="submit"
-                  className="flex w-1/2 justify-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-150 hover:bg-green-150/90"
+                  disabled={isLoading}
+                  className="flex w-full justify-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-150 hover:bg-green-150/90"
                 >
-                  {isSignUp ? "Sign Up" : "Sign In"}
+                  {isLoading ? (
+                    <InputLoader />
+                  ) : isSignUp ? (
+                    "Sign Up"
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
 
                 <div className="relative flex justify-center text-sm">
@@ -239,16 +327,11 @@ const AuthForm = () => {
                 </div>
 
                 <div className="flex space-x-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="inline-flex justify-center items-center w-14 h-14 border border-gray-300 rounded-full shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                  >
-                    <SiFacebook className="w-6 h-6 text-blue-600" />
-                  </Button>
+            
                   <Button
                     type="button"
                     onClick={googleLoginHandler}
+                    disabled={isLoading}
                     variant="outline"
                     className="inline-flex justify-center items-center w-14 h-14 border border-gray-300 rounded-full shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                   >
@@ -261,7 +344,11 @@ const AuthForm = () => {
         </div>
       </div>
       <div className="hidden lg:block relative w-0 flex-1">
-        <img className="h-full" src={login} alt="login image" />
+        <img
+          className="h-full object-cover"
+          src={loginImage}
+          alt="login image"
+        />
       </div>
     </div>
   );

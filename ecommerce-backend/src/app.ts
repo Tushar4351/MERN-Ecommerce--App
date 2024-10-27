@@ -32,7 +32,11 @@ const app = express();
 app.use(express.json()); //allows us to parse incoming requests:req.body
 app.use(cookieParser()); // allows us to parse incoming cookies
 app.use(morgan("dev"));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or '*'
+  })
+);
 
 app.get("/", (req, res) => {
   console.log("Received request for /");
