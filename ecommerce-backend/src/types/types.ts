@@ -9,7 +9,6 @@ export interface NewUserRequestBody {
   gender: string;
   _id: string;
   dob: Date;
-  isVerified: boolean;
 }
 
 export interface NewProductRequestBody {

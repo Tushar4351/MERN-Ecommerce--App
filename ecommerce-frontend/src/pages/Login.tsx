@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BsGenderAmbiguous } from "react-icons/bs";
-import { SiFacebook } from "react-icons/si";
 import { FaGoogle } from "react-icons/fa";
 import { CiCalendarDate } from "react-icons/ci";
 import {
@@ -97,6 +96,7 @@ const AuthForm: React.FC = () => {
 
   const handleSignUp = async () => {
     try {
+      const userId = uuidv4();
       const response = await signup({
         name: formData.name,
         email: formData.email,
@@ -105,7 +105,7 @@ const AuthForm: React.FC = () => {
         gender: formData.gender,
         role: "user",
         dob: formData.dateOfBirth,
-        _id: uuidv4(),
+        _id: userId,
       }).unwrap();
 
       toast.success(response.message);

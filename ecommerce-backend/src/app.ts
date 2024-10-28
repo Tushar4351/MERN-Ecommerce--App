@@ -34,7 +34,8 @@ app.use(cookieParser()); // allows us to parse incoming cookies
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://localhost:5173", // or '*'
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 

@@ -4,13 +4,18 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Loader from "./components/Shared/Loader";
 import Header from "./components/Shared/Header";
 import NewsLetter from "./components/Shared/NewsLetter";
 import Footer from "./components/Shared/Footer";
 import ScrollProvider from "./components/Shared/ScrollProvider";
 import { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+
+import {  useCheckAuthQuery } from "./redux/api/userApi";
+import { userExist, userNotExist } from "./redux/reducer/userReducer";
+import { UserReducerInitialState } from "./types/reducer-types";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -62,11 +67,23 @@ const App = () => {
 const AppContent = () => {
   const location = useLocation();
   const isTransparent = location.pathname === "/login";
+  const { user, loading } = useSelector(
+    (state: { userReducer: UserReducerInitialState }) => state.userReducer
+  );
 
-  return (
+  const dispatch = useDispatch();
+  const { data, error } = useCheckAuthQuery();
+  useEffect(() => {
+    if (data) {
+      console.log("Authenticated user data:", data.user);
+      dispatch(userExist(data.user));
+    } else dispatch(userNotExist());
+  }, [data, error]);
+
+  return  (
     <>
       {/* Header Section */}
-      {!isTransparent && <Header />}
+      {!isTransparent && <Header user={user} />}
 
       <Suspense fallback={<Loader />}>
         <Routes>

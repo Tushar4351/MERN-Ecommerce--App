@@ -13,12 +13,8 @@ interface Iuser extends Document {
   dob: Date;
   createdAt: Date;
   updatedAt: Date;
+  //   Virtual Attribute
   age: number;
-  isVerified: boolean;
-  verificationToken: any;
-  verificationTokenExpiresAt: any;
-  resetPasswordToken: any;
-  resetPasswordExpiresAt: any;
 }
 
 const userSchema = new mongoose.Schema(
@@ -47,14 +43,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Please enter gender"],
     },
     dob: { type: Date, required: [true, "Please enter date of birth"] },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    resetPasswordToken: String,
-    resetPasswordExpiresAt: Date,
-    verificationToken: String,
-    verificationTokenExpiresAt: Date,
+ 
   },
 
   { timestamps: true }

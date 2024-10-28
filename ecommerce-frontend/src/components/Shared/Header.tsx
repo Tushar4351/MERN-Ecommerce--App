@@ -15,19 +15,19 @@ import {
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import { User } from "@/types/types";
 
-const user = {
-  _id: "",
-  role: "",
-};
+interface PropsType {
+  user: User | null;
+}
 
-const Header = () => {
+const Header = ({ user }: PropsType) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation(); // Get the current location
+  console.log("user header", user);
 
   const openSidebar = () => setIsOpen(true);
   const closeSidebar = () => setIsOpen(false);
-  console.log("Current pathname:", location.pathname);
   // Set background color based on pathname
   const isTransparent = location.pathname === "/";
 
