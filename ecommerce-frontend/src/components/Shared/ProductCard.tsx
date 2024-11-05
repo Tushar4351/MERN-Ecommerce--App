@@ -33,12 +33,12 @@ const ProductCard = ({
           <BsCart3 className="h-6 w-6 text-white" />
         </button>
       </div>
-      <div className="mt-4 flex justify-between">
+      <div className="mt-4 flex justify-between items-center">
         <div>
           <h3 className="text-sm text-gray-700">
             <a href="#">
               <span aria-hidden="true" className="absolute inset-0" />
-              <p className="text-lg font-semibold text-gray-900 mb-0">{name}</p>
+              <p className="text-lg font-semibold text-gray-900">{name}</p>
             </a>
           </h3>
         </div>

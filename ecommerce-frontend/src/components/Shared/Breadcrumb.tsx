@@ -15,7 +15,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ pageName, currentPage }) => {
 
       <div className="flex items-center gap-2 text-md">
         <Link
-          to={pageName === "home" ? "/" : `/${pageName}`}
+          to={pageName === "Home" ? "/" : `/${pageName}`}
           className="text-gray-600 hover:underline transition-colors"
         >
           {pageName}

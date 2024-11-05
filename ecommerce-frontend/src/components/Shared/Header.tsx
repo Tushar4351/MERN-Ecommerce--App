@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { User } from "@/types/types";
@@ -24,7 +23,7 @@ interface PropsType {
 const Header = ({ user }: PropsType) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation(); // Get the current location
-  console.log("user header", user);
+ // console.log("user header", user);
 
   const openSidebar = () => setIsOpen(true);
   const closeSidebar = () => setIsOpen(false);
@@ -77,9 +76,7 @@ const Header = ({ user }: PropsType) => {
               </>
             ) : (
               <Link to={"/login"}>
-                <Button className="bg-green-150 hover:bg-green-150/80">
-                  Login
-                </Button>
+                <AiOutlineUser className="w-5 h-5" />
               </Link>
             )}
           </div>
@@ -88,7 +85,7 @@ const Header = ({ user }: PropsType) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 bg-stone-800 w-full md:w-1/4 min-h-screen overflow-y-auto transition-transform transform ${
+        className={`fixed top-0 left-0 bg-stone-800 w-full md:w-[400px] min-h-screen overflow-y-auto transition-transform transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } ease-in-out duration-300 z-30`}
       >
@@ -145,15 +142,19 @@ const Header = ({ user }: PropsType) => {
               </Link>
             </li>
             <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
-            <li>
-              <Link
-                to="/login"
-                className="block py-2 px-3 mt-8 text-white rounded hover:text-green-150 md:p-0"
-              >
-                Sign In / Sign Up
-              </Link>
-            </li>
-            <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
+            {!user?._id && (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="block py-2 px-3 mt-8 text-white rounded hover:text-green-150 md:p-0"
+                  >
+                    Sign In / Sign Up
+                  </Link>
+                </li>
+                <Separator className="opacity-20 text-[#DEDEDE] mt-6" />
+              </>
+            )}
           </ul>
         </div>
       </div>
