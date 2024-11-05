@@ -24,3 +24,21 @@ const Loader = () => {
 };
 
 export default Loader;
+
+export const ProductSkeleton = () => {
+  return (
+    <div className="animate-pulse flex flex-col items-center gap-4 w-60">
+      <div></div>
+      <div className="h-[150px] bg-slate-300 w-full rounded-md"></div>
+      <div className="h-7 bg-slate-300 w-full rounded-md"></div>
+    </div>
+  );
+};
+
+export const LineSkeleton = () => {
+  return (
+    <div className="animate-pulse flex flex-col items-center w-full">
+      <div className="h-7 bg-slate-300 w-full rounded-md"></div>
+    </div>
+  );
+};

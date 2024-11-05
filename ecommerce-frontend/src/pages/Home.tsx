@@ -6,10 +6,15 @@ import { Button } from "@/components/ui/button";
 import { DirectionAwareHover } from "@/components/Shared/DirectionAwareHover";
 import men from "/men.png";
 import women from "/women.png";
+import { useLatestProductsQuery } from "@/redux/api/productApi";
+import toast from "react-hot-toast";
+import { ProductSkeleton } from "@/components/Shared/Loader";
 
 const Home = () => {
-  const addToCartHandler = () => {};
+  const { data, isError, isLoading } = useLatestProductsQuery("");
 
+  const addToCartHandler = () => {};
+  if (isError) toast.error("Cannot Fetch the Products");
   return (
     <div>
       <section className="relative w-full h-screen overflow-hidden">
@@ -120,46 +125,21 @@ const Home = () => {
         </div>
         <div className="max-w-7xl mx-auto w-full">
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            <ProductCard
-              productId="absjsjwjww"
-              name="MackBook"
-              photo="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
-              price={100}
-              stock={10}
-              handler={() => {
-                addToCartHandler;
-              }}
-            />
-            <ProductCard
-              productId="absjsjwjww"
-              name="MackBook"
-              photo="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
-              price={100}
-              stock={10}
-              handler={() => {
-                addToCartHandler;
-              }}
-            />
-            <ProductCard
-              productId="absjsjwjww"
-              name="MackBook"
-              photo="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
-              price={100}
-              stock={10}
-              handler={() => {
-                addToCartHandler;
-              }}
-            />
-            <ProductCard
-              productId="absjsjwjww"
-              name="MackBook"
-              photo="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
-              price={100}
-              stock={10}
-              handler={() => {
-                addToCartHandler;
-              }}
-            />
+            {isLoading ? (
+              <ProductSkeleton />
+            ) : (
+              data?.products.map((i) => (
+                <ProductCard
+                  key={i._id}
+                  productId={i._id}
+                  name={i.name}
+                  price={i.price}
+                  stock={i.stock}
+                  handler={addToCartHandler}
+                  photo={i.photo}
+                />
+              ))
+            )}
           </div>
         </div>
       </section>

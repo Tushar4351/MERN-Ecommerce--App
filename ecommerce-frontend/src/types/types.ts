@@ -20,7 +20,7 @@ export type Product = {
   ratings: number;
   numOfReviews: number;
   description: string;
-  photos: {
+  photo: {
     url: string;
     public_id: string;
   }[];

@@ -99,6 +99,10 @@ export const SignInUser = TryCatch(async (req, res, next) => {
     },
   });
 });
+export const logout = TryCatch(async (req, res, next) => {
+	res.clearCookie("token");
+	res.status(200).json({ success: true, message: "Logged out successfully" });
+});
 
 
 

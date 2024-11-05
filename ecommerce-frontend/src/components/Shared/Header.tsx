@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { IoSearchOutline } from "react-icons/io5";
 import { BsCart3 } from "react-icons/bs";
@@ -15,6 +15,10 @@ import {
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { User } from "@/types/types";
+import { useLogoutMutation } from "@/redux/api/userApi";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { userNotExist } from "@/redux/reducer/userReducer";
 
 interface PropsType {
   user: User | null;
@@ -22,11 +26,28 @@ interface PropsType {
 
 const Header = ({ user }: PropsType) => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); // Get the current location
- // console.log("user header", user);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  //const navigate = useNavigate();
+
+  const [logout] = useLogoutMutation();
+  console.log("user header", user);
 
   const openSidebar = () => setIsOpen(true);
   const closeSidebar = () => setIsOpen(false);
+  //create logouthandler
+  const LogoutHandler = async () => {
+    try {
+      await logout().unwrap();
+      // console.log("Logout successful, dispatching userNotExist");
+      dispatch(userNotExist());
+      toast.success("Sign Out Successfully");
+      window.location.reload();
+    } catch (error) {
+      toast.error("Sign Out Failed");
+    }
+  };
+
   // Set background color based on pathname
   const isTransparent = location.pathname === "/";
 
@@ -67,7 +88,10 @@ const Header = ({ user }: PropsType) => {
                       <Link to="/orders">Orders</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <button className="flex justify-center items-center space-x-2">
+                      <button
+                        onClick={LogoutHandler}
+                        className="flex justify-center items-center space-x-2"
+                      >
                         <span>Logout</span> <LuLogOut className="w-4 h-4" />
                       </button>
                     </DropdownMenuItem>
