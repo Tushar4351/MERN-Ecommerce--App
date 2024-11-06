@@ -9,11 +9,21 @@ import women from "/women.png";
 import { useLatestProductsQuery } from "@/redux/api/productApi";
 import toast from "react-hot-toast";
 import { ProductSkeleton } from "@/components/Shared/Loader";
+import { CartItem } from "@/types/types";
+import { addToCart } from "@/redux/reducer/cartReducer";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
   const { data, isError, isLoading } = useLatestProductsQuery("");
 
-  const addToCartHandler = () => {};
+  const dispatch = useDispatch();
+
+  const addToCartHandler = (cartItem: CartItem) => {
+    if (cartItem.stock < 1) return toast.error("Out of Stock");
+    dispatch(addToCart(cartItem));
+    toast.success("Added to cart");
+  };
+
   if (isError) toast.error("Cannot Fetch the Products");
   return (
     <div>

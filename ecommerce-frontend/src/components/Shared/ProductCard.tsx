@@ -37,7 +37,7 @@ const ProductCard = ({
               productId,
               price,
               name,
-              photo: photo[0].url,
+              photo,
               stock,
               quantity: 1,
             })

@@ -1,6 +1,6 @@
 import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
 
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 import TableHOC from "../../components/Shared/admin/TableHOC";
 import { Column } from "react-table";
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { useAllProductsQuery } from "@/redux/api/productApi";
 import { useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
+
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";
 import { UserReducerInitialState } from "@/types/reducer-types";
@@ -46,7 +46,6 @@ const columns: Column<DataType>[] = [
   },
 ];
 
-
 const Products = () => {
   const { user } = useSelector(
     (state: { userReducer: UserReducerInitialState }) => state.userReducer
@@ -54,7 +53,7 @@ const Products = () => {
 
   const userId = user?._id;
 
-const { isLoading, isError, error, data } = useAllProductsQuery(userId!);
+  const { isLoading, isError, error, data } = useAllProductsQuery(userId!);
 
   const [rows, setRows] = useState<DataType[]>([]);
 
@@ -77,13 +76,12 @@ const { isLoading, isError, error, data } = useAllProductsQuery(userId!);
   }, [data]);
 
   const Table = TableHOC<DataType>(
-      columns,
-      rows,
-      "dashboard-product-box",
-      "Products",
-      true
-    )()
-
+    columns,
+    rows,
+    "dashboard-product-box",
+    "Products", 
+    rows.length > 6
+  )();
 
   return (
     <div className="h-screen grid grid-cols-1 xl:grid-cols-6 bg-gray-50/50">

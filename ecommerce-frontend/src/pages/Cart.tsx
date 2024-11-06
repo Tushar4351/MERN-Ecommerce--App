@@ -1,27 +1,20 @@
 import Breadcrumb from "@/components/Shared/Breadcrumb";
 import CartItemCard from "@/components/Shared/CartItemCard";
 import { Button } from "@/components/ui/button";
+import { CartReducerInitialState } from "@/types/reducer-types";
 import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const cartItems = [
-  {
-    productId: "dfwesdfefe",
-    photo: "https://m.media-amazon.com/images/I/719C6bJv8jL._SL1500_.jpg",
-
-    name: "MackBook",
-    price: 3000,
-    quantity: 2,
-    stock: 10,
-  },
-];
-const subtotal = 3000;
-const tax = Math.round(subtotal * 0.18);
-const shippingCharges = 100;
-const discount = 400;
-const total = subtotal + tax + shippingCharges;
 const Cart = () => {
+  const { cartItems, subtotal, tax, total, shippingCharges, discount } =
+    useSelector(
+      (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+    );
+
+  const dispatch = useDispatch();
+
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
 

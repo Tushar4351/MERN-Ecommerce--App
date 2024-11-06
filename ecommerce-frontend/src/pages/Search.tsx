@@ -1,19 +1,56 @@
 import Breadcrumb from "@/components/Shared/Breadcrumb";
+import { ProductSkeleton } from "@/components/Shared/Loader";
 import ProductCard from "@/components/Shared/ProductCard";
+import {
+  useCategoriesQuery,
+  useSearchProductsQuery,
+} from "@/redux/api/productApi";
+import { CustomError } from "@/types/api-types";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 
 const Search = () => {
+  const {
+    data: categoriesResponse,
+    isLoading: loadingCategories,
+    isError,
+    error,
+  } = useCategoriesQuery("");
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [maxPrice, setMaxPrice] = useState(100000);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
+  const {
+    isLoading: productLoading,
+    data: searchedData,
+    isError: productIsError,
+    error: productError,
+  } = useSearchProductsQuery({
+    search,
+    sort,
+    category,
+    page,
+    price: maxPrice,
+  });
+
   const addToCartHandler = () => {};
 
   const isPrevPage = page > 1;
   const isNextPage = page < 4;
+
+  if (isError) {
+    const err = error as CustomError;
+    toast.error(err.data.message);
+  }
+  if (productIsError) {
+    const err = productError as CustomError;
+    toast.error(err.data.message);
+  }
+
   return (
     <div>
       <div className="mt-12">
@@ -57,9 +94,12 @@ const Search = () => {
               className="px-4 w-full border-2 py-2 rounded-md text-sm outline-none"
             >
               <option value="">ALL</option>
-              <option value="men">MEN</option>
-              <option value="women">WOMEN</option>
-              <option value="kids">KIDS</option>
+              {!loadingCategories &&
+                categoriesResponse?.categories.map((i) => (
+                  <option key={i} value={i}>
+                    {i.toUpperCase()}
+                  </option>
+                ))}
             </select>
           </div>
         </aside>
@@ -81,35 +121,42 @@ const Search = () => {
               {/* Using the BiSearch icon */}
             </button>
           </div>
-          <div className="flex flex-wrap overflow-y-auto">
-            <ProductCard
-              productId="absjsjwjww"
-              name="MackBook"
-              photo="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
-              price={100}
-              stock={10}
-              handler={() => {
-                addToCartHandler;
-              }}
-            />
-          </div>
-          <article className="flex justify-center items-center gap-4">
-            <button
-              className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isPrevPage}
-              onClick={() => setPage((prev) => prev - 1)}
-            >
-              Prev
-            </button>
-            <span>{page} of 4</span>
-            <button
-              className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isNextPage}
-              onClick={() => setPage((prev) => prev + 1)}
-            >
-              Next
-            </button>
-          </article>
+          {productLoading ? (
+            <ProductSkeleton />
+          ) : (
+            <div className="flex flex-wrap overflow-y-auto">
+              {searchedData?.products.map((i) => (
+                <ProductCard
+                  key={i._id}
+                  productId={i._id}
+                  name={i.name}
+                  price={i.price}
+                  stock={i.stock}
+                  handler={addToCartHandler}
+                  photo={i.photo}
+                />
+              ))}
+            </div>
+          )}
+          {searchedData && searchedData.totalPage > 1 && (
+            <article className="flex justify-center items-center gap-4">
+              <button
+                className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!isPrevPage}
+                onClick={() => setPage((prev) => prev - 1)}
+              >
+                Prev
+              </button>
+              <span>{page} of 4</span>
+              <button
+                className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!isNextPage}
+                onClick={() => setPage((prev) => prev + 1)}
+              >
+                Next
+              </button>
+            </article>
+          )}
         </main>
       </div>
     </div>
