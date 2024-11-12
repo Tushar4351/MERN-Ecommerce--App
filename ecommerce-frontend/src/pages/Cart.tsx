@@ -1,7 +1,13 @@
 import Breadcrumb from "@/components/Shared/Breadcrumb";
 import CartItemCard from "@/components/Shared/CartItemCard";
 import { Button } from "@/components/ui/button";
+import {
+  addToCart,
+  calculatePrice,
+  removeCartItem,
+} from "@/redux/reducer/cartReducer";
 import { CartReducerInitialState } from "@/types/reducer-types";
+import { CartItem } from "@/types/types";
 import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +24,22 @@ const Cart = () => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
 
+  const incrementHandler = (cartItem: CartItem) => {
+    if (cartItem.quantity >= cartItem.stock) return;
+
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }));
+  };
+
+  const decrementHandler = (cartItem: CartItem) => {
+    if (cartItem.quantity <= 1) return;
+
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }));
+  };
+
+  const removeHandler = (productId: string) => {
+    dispatch(removeCartItem(productId));
+  };
+
   useEffect(() => {
     const timeOutId = setTimeout(() => {
       if (Math.random() > 0.5) {
@@ -33,6 +55,10 @@ const Cart = () => {
     };
   }, [couponCode]);
 
+  useEffect(() => {
+    dispatch(calculatePrice());
+  }, [cartItems]);
+
   return (
     <section className="bg-white  antialiased py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -43,7 +69,13 @@ const Cart = () => {
             <div className="space-y-6">
               {cartItems.length > 0 ? (
                 cartItems.map((i, idx) => (
-                  <CartItemCard key={idx} cartItem={i} />
+                  <CartItemCard
+                    incrementHandler={incrementHandler}
+                    decrementHandler={decrementHandler}
+                    removeHandler={removeHandler}
+                    key={idx}
+                    cartItem={i}
+                  />
                 ))
               ) : (
                 <h1 className="text-center text-gray-900">No Items Added</h1>

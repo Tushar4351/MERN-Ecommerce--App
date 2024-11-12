@@ -14,6 +14,7 @@ type ProductsProps = {
   stock: number;
   handler: (cartItem: CartItem) => string | undefined;
 };
+
 const ProductCard = ({
   productId,
   price,
@@ -22,35 +23,36 @@ const ProductCard = ({
   stock,
   handler,
 }: ProductsProps) => {
-
   return (
     <div className="group relative">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+      <div className="relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
         <img
           className="h-full w-full object-cover object-center lg:h-full lg:w-full transition duration-500 group-hover:scale-105"
           src={`${server}/${photo}`}
           alt={name}
         />
-        <button
-          onClick={() =>
-            handler({
-              productId,
-              price,
-              name,
-              photo,
-              stock,
-              quantity: 1,
-            })
-          }
-          className="absolute left-1/2 top-1/2 w-10 h-10 inset-0 flex items-center justify-center bg-black-heading rounded-full p-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-1/2 -translate-y-1/2"
-        >
-          <BsCart3 className="h-6 w-6 text-white" />
-        </button>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
+          <button
+            onClick={() =>
+              handler({
+                productId,
+                price,
+                name,
+                photo,
+                stock,
+                quantity: 1,
+              })
+            }
+            className="transform -translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 w-12 h-12 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 z-10"
+          >
+            <BsCart3 className="h-6 w-6 text-gray-900" />
+          </button>
+        </div>
       </div>
       <div className="mt-4 flex justify-between items-center">
         <div>
           <h3 className="text-sm text-gray-700">
-            <a href="#">
+            <a href={`/product/${productId}`}>
               <span aria-hidden="true" className="absolute inset-0" />
               <p className="text-lg font-semibold text-gray-900">{name}</p>
             </a>
