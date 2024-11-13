@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import {
   addToCart,
   calculatePrice,
+  discountApplied,
   removeCartItem,
+  saveCoupon,
 } from "@/redux/reducer/cartReducer";
+import { server } from "@/redux/store";
 import { CartReducerInitialState } from "@/types/reducer-types";
 import { CartItem } from "@/types/types";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,16 +45,29 @@ const Cart = () => {
   };
 
   useEffect(() => {
+    const { token: cancelToken, cancel } = axios.CancelToken.source();
+
     const timeOutId = setTimeout(() => {
-      if (Math.random() > 0.5) {
-        setIsValidCouponCode(true);
-      } else {
-        setIsValidCouponCode(false);
-      }
+      axios
+        .get(`${server}/api/v1/payment/discount?coupon=${couponCode}`, {
+          cancelToken,
+        })
+        .then((res) => {
+          dispatch(discountApplied(res.data.discount));
+          dispatch(saveCoupon(couponCode));
+          setIsValidCouponCode(true);
+          dispatch(calculatePrice());
+        })
+        .catch(() => {
+          dispatch(discountApplied(0));
+          setIsValidCouponCode(false);
+          dispatch(calculatePrice());
+        });
     }, 1000);
 
     return () => {
       clearTimeout(timeOutId);
+      cancel();
       setIsValidCouponCode(false);
     };
   }, [couponCode]);
@@ -156,23 +173,26 @@ const Cart = () => {
                 Do you have a coupon or gift card?
               </div>
               <div className="flex space-x-4">
-                <input
-                  type="text"
-                  placeholder="Coupon Code"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
-                />
-                {couponCode &&
-                  (isValidCouponCode ? (
-                    <span className="text-green-600">
-                      ₹{discount} off using the <code>{couponCode}</code>
-                    </span>
-                  ) : (
-                    <span className="text-red-600">
-                      Invalid Coupon <VscError />
-                    </span>
-                  ))}
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Coupon Code"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500"
+                  />
+                  {couponCode &&
+                    (isValidCouponCode ? (
+                      <span className="text-green-600 text-sm">
+                        ₹{discount} off using the <code>{couponCode}</code>
+                      </span>
+                    ) : (
+                      <span className="text-red-600">
+                        Invalid Coupon <VscError />
+                      </span>
+                    ))}
+                </div>
+
                 <Button className="bg-green-150 hover:bg-green-150/80">
                   Apply Code
                 </Button>

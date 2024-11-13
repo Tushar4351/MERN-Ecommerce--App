@@ -1,8 +1,15 @@
 import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
 import { Column } from "react-table";
 import { Link } from "react-router-dom";
-import { ReactElement, useState, useCallback } from "react";
+import { ReactElement, useState, useCallback, useEffect } from "react";
 import TableHOC from "../../components/Shared/admin/TableHOC";
+import { useSelector } from "react-redux";
+import { UserReducerInitialState } from "@/types/reducer-types";
+import { useAllOrdersQuery } from "@/redux/api/orderApi";
+import { CustomError } from "@/types/api-types";
+import toast from "react-hot-toast";
+import { server } from "@/redux/store";
+import { LineSkeleton } from "@/components/Shared/Loader";
 
 interface DataType {
   user: string;
@@ -40,78 +47,75 @@ const columns: Column<DataType>[] = [
   },
 ];
 
-const arr: DataType[] = [
-  {
-    user: "Charas",
-    amount: 4500,
-    discount: 400,
-    quantity: 3,
-    status: <span className="text-red-600">Processing</span>,
-    action: (
-      <Link
-        className="bg-blue-300 p-2 text-center rounded-2xl text-blue-900"
-        to="/admin/transaction/sajknaskd"
-      >
-        Manage
-      </Link>
-    ),
-  },
-  {
-    user: "Xavirors",
-    amount: 6999,
-    discount: 400,
-    status: <span className="text-green-500">Shipped</span>,
-    quantity: 6,
-    action: (
-      <Link
-        className="bg-blue-300 p-2 text-center rounded-2xl text-blue-900"
-        to="/admin/transaction/sajknaskd"
-      >
-        Manage
-      </Link>
-    ),
-  },
-  {
-    user: "Xavirors",
-    amount: 6999,
-    discount: 400,
-    status: <span className="text-indigo-600">Delivered</span>,
-    quantity: 6,
-    action: (
-      <Link
-        className="bg-blue-300 p-2 text-center rounded-2xl text-blue-900"
-        to="/admin/transaction/sajknaskd"
-      >
-        Manage
-      </Link>
-    ),
-  },
-];
+
 
 const Transaction = () => {
-  const [data] = useState<DataType[]>(arr);
-
-  const Table = useCallback(
-    TableHOC<DataType>(
-      columns,
-      data,
-      "dashboard-product-box",
-      "Transactions",
-      true
-    ),
-    []
+  const { user } = useSelector(
+    (state: { userReducer: UserReducerInitialState }) => state.userReducer
   );
+  const userId = user?._id;
+
+  const { isLoading, isError, error, data } = useAllOrdersQuery(userId!);
+  const [rows, setRows] = useState<DataType[]>([]);
+
+  if (isError) {
+    const err = error as CustomError;
+    toast.error(err.data.message);
+  }
+
+  useEffect(() => {
+    if (data)
+      setRows(
+        data.orders.map((i) => ({
+          user: i.user.name,
+          amount: i.total,
+          discount: i.discount,
+          quantity: i.orderItems.length,
+          status: (
+            <span
+              className={
+                i.status === "Processing"
+                  ? "text-red-500"
+                  : i.status === "Shipped"
+                  ? "text-green-500"
+                  : "text-purple-500"
+              }
+            >
+              {i.status}
+            </span>
+          ),
+          action: <Link to={`/admin/transaction/${i._id}`}>Manage</Link>,
+        }))
+      );
+  }, [data]);
+
+  const Table = TableHOC<DataType>(
+    columns,
+    rows,
+    "dashboard-product-box",
+    "Transactions",
+    rows.length > 6
+  )();
+
   return (
     <div className="h-screen xl:grid xl:grid-cols-6 bg-gray-50/50">
+      <div>
+        <AdminSidebar />
+      </div>
 
-    <div>
-      <AdminSidebar />
+      <div className="md:col-span-5 xl:col-span-5 flex flex-row overflow-y-auto m-4 p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
+        <div className="w-full">
+          {" "}
+          {isLoading ? (
+            <>
+              <LineSkeleton />
+            </>
+          ) : (
+            Table
+          )}
+        </div>
+      </div>
     </div>
-  
-    <div className="md:col-span-5 xl:col-span-5 flex flex-row overflow-y-auto m-4 p-4 bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-      <div className="w-full">{Table()}</div>
-    </div>
-  </div>
   );
 };
 

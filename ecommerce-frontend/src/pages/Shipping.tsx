@@ -1,10 +1,12 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { MapPin, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import Breadcrumb from "@/components/Shared/Breadcrumb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { CartReducerInitialState } from "@/types/reducer-types";
 
 interface Address {
   street: string;
@@ -31,8 +33,14 @@ const AddressForm: React.FC = () => {
     lat: null,
     lng: null,
   });
+  const { cartItems } = useSelector(
+    (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+  );
 
   const [userLocation, setUserLocation] = useState<Location | null>(null);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -65,6 +73,10 @@ const AddressForm: React.FC = () => {
         `${address.street}, ${address.city}, ${address.state}, ${address.country}`
       )}`
     : `https://www.google.com/maps/embed/v1/view?key=YOUR_API_KEY&center=0,0&zoom=2`;
+
+  useEffect(() => {
+    if (cartItems.length <= 0) return navigate("/cart");
+  }, [cartItems]);
 
   return (
     <div className="container mx-auto px-4 py-8">

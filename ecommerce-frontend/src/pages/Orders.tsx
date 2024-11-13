@@ -1,11 +1,15 @@
-import { ReactElement,  useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import TableHOC from "../components/Shared/admin/TableHOC";
 import Breadcrumb from "@/components/Shared/Breadcrumb";
-
-
+import { useSelector } from "react-redux";
+import { UserReducerInitialState } from "@/types/reducer-types";
+import { useMyOrdersQuery } from "@/redux/api/orderApi";
+import { CustomError } from "@/types/api-types";
+import toast from "react-hot-toast";
+import { LineSkeleton } from "@/components/Shared/Loader";
 
 type DataType = {
   _id: string;
@@ -44,21 +48,44 @@ const column: Column<DataType>[] = [
 ];
 
 const Orders = () => {
- 
+  const { user } = useSelector(
+    (state: { userReducer: UserReducerInitialState }) => state.userReducer
+  );
+  const userId = user?._id;
+  const { isLoading, data, isError, error } = useMyOrdersQuery(userId!);
 
-    const [rows] = useState<DataType[]>([
-        {
-          _id: "1",
-          amount: 100,
-          quantity: 1,
-          discount: 0,
-          status: <span className="text-red-500">Processing</span>,
-          action: <Link to={`/orders/sgdgdhgdehhedth`}>Manage</Link>,
-        },
-      ]);
+  const [rows, setRows] = useState<DataType[]>([]);
 
+  if (isError) {
+    const err = error as CustomError;
+    toast.error(err.data.message);
+  }
 
-
+  useEffect(() => {
+    if (data)
+      setRows(
+        data.orders.map((i) => ({
+          _id: i._id,
+          amount: i.total,
+          discount: i.discount,
+          quantity: i.orderItems.length,
+          status: (
+            <span
+              className={
+                i.status === "Processing"
+                  ? "text-red-500"
+                  : i.status === "Shipped"
+                  ? "text-green-500"
+                  : "text-purple-500"
+              }
+            >
+              {i.status}
+            </span>
+          ),
+          action: <Link to={`/admin/transaction/${i._id}`}>Manage</Link>,
+        }))
+      );
+  }, [data]);
 
   const Table = TableHOC<DataType>(
     column,
@@ -71,8 +98,14 @@ const Orders = () => {
     <div className="container max-w-7xl w-full overflow-auto">
       <div className="mt-12">
         <Breadcrumb pageName="Home" currentPage="My Orders" />
-      </div>
-      {Table}
+      </div>{" "}
+      {isLoading ? (
+        <>
+          <LineSkeleton />
+        </>
+      ) : (
+        Table
+      )}
     </div>
   );
 };

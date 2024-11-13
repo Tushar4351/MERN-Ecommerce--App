@@ -3,7 +3,7 @@ import AdminSidebar from "../../../components/Shared/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { UserReducerInitialState } from "@/types/reducer-types";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteProductMutation,
   useProductDetailsQuery,
@@ -107,7 +107,7 @@ const ProductManagement = () => {
       // setDescriptionUpdate(data.product.description);
     }
   }, [data]);
-
+  if (isError) return <Navigate to={"/404"} />;
   return (
     <div className="admin-container h-screen bg-gray-50/50 overflow-y-auto">
       <div>
