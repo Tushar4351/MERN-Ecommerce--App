@@ -1,13 +1,121 @@
 import Breadcrumb from "@/components/Shared/Breadcrumb";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { CreditCard, Calendar, Lock, Check } from "lucide-react";
 import { RiVisaLine } from "react-icons/ri";
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { resetCart } from "../redux/reducer/cartReducer";
+import { NewOrderRequest } from "../types/api-types";
+import { useNewOrderMutation } from "@/redux/api/orderApi";
+import { responseToast } from "@/utils/Features";
+import { RootState } from "@/redux/store";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
+
+const CheckOutForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
+  const {
+    shippingInfo,
+    cartItems,
+    subtotal,
+    tax,
+    discount,
+    shippingCharges,
+    total,
+  } = useSelector((state: RootState) => state.cartReducer);
+
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+
+  const [newOrder] = useNewOrderMutation();
+
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) return;
+    setIsProcessing(true);
+
+    const userId = user?._id;
+
+    const orderData: NewOrderRequest = {
+      shippingInfo,
+      orderItems: cartItems,
+      subtotal,
+      tax,
+      discount,
+      shippingCharges,
+      total,
+      user: userId!,
+    };
+
+    const { paymentIntent, error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: { return_url: window.location.origin },
+      redirect: "if_required",
+    });
+
+    if (error) {
+      setIsProcessing(false);
+      return toast.error(error.message || "Something Went Wrong");
+    }
+
+    if (paymentIntent.status === "succeeded") {
+      const res = await newOrder(orderData);
+      dispatch(resetCart());
+      responseToast(res, navigate, "/orders");
+    }
+    setIsProcessing(false);
+  };
+  return (
+    <div className="checkout-container">
+      <form onSubmit={submitHandler}>
+        <div className="space-y-4">
+          <div className="text-xl font-semibold text-gray-900">Card Detail</div>
+          <PaymentElement />
+        </div>
+        <motion.button
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="w-full p-4 mt-4 bg-emerald-500 text-white rounded-lg font-medium hover:bg-emerald-500/90 transition-colors"
+          type="submit"
+          disabled={isProcessing}
+        >
+          {isProcessing ? "Processing..." : "Pay"}
+        </motion.button>
+      </form>
+    </div>
+  );
+};
+
 const Payment = () => {
   const [cardType, setCardType] = useState("credit");
-  const [saveCard, setSaveCard] = useState(false);
+  const location = useLocation();
+
+  const clientSecret: string | undefined = location.state;
+
+  if (!clientSecret) return <Navigate to={"/shipping"} />;
   return (
-    <div>
+    <Elements
+      options={{
+        clientSecret,
+      }}
+      stripe={stripePromise}
+    >
       <div className="mt-12">
         <Breadcrumb pageName="shipping" currentPage="Payment" />
       </div>
@@ -61,68 +169,7 @@ const Payment = () => {
               )}
             </motion.button>
           </div>
-
-          <div className="space-y-4">
-            <div className="text-xl font-semibold text-gray-900">Card Detail</div>
-
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Name On Card"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none"
-              />
-
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Card Number"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none"
-                />
-                <RiVisaLine className="absolute w-9 h-9 text-blue-900 right-3 top-1/2 transform -translate-y-1/2"/>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="MM / YY"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none"
-                  />
-                  <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                </div>
-
-                <div className="relative">
-                  <input
-                    type="password"
-                    placeholder="CVV"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none"
-                  />
-                  <Lock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                </div>
-              </div>
-            </div>
-
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={saveCard}
-                onChange={(e) => setSaveCard(e.target.checked)}
-                className="w-5 h-5 text-emerald-500 rounded focus:ring-emerald-500"
-              />
-              <span className="text-sm text-gray-600">
-                Securely save this card for a faster checkout next time
-              </span>
-            </label>
-
-            <motion.button
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="w-full p-4 bg-emerald-500 text-white rounded-lg font-medium hover:bg-emerald-600 transition-colors"
-            >
-              Pay $195.30
-            </motion.button>
-          </div>
+          <CheckOutForm />
         </div>
 
         <div className="rounded-lg flex flex-col md:w-1/3 border-2 sm:w-1/2 md:border-0">
@@ -181,7 +228,7 @@ const Payment = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Elements>
   );
 };
 

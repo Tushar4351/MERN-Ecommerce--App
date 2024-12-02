@@ -23,3 +23,4 @@ export const store = configureStore({
       orderApi.middleware
     ), // Add the API middleware
 });
+export type RootState = ReturnType<typeof store.getState>;

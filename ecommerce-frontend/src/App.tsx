@@ -96,7 +96,6 @@ const AppContent = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/payment" element={<Payment />} />
 
           {/* Not logged In Route */}
           <Route
@@ -112,6 +111,7 @@ const AppContent = () => {
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/order/:id" element={<OrderDetails />} />
+            <Route path="/payment" element={<Payment />} />
           </Route>
 
           {/* Admin Routes */}

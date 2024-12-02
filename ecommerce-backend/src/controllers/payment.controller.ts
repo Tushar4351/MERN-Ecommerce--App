@@ -6,10 +6,9 @@ import { User } from "../models/user.model.js";
 import { OrderItemType, ShippingInfoType } from "../types/types.js";
 import ErrorHandler from "../utils/utility-class.js";
 
-
 export const createPaymentIntent = TryCatch(async (req, res, next) => {
+  
   const { id } = req.query;
-
   const user = await User.findById(id).select("name");
 
   if (!user) return next(new ErrorHandler("Please login first", 401));
@@ -77,24 +76,18 @@ export const createPaymentIntent = TryCatch(async (req, res, next) => {
   });
 });
 
-
-
-
-
-
-
 export const newCoupon = TryCatch(async (req, res, next) => {
-    const { coupon, amount } = req.body;
-  
-    if (!coupon || !amount)
-      return next(new ErrorHandler("Please enter both coupon and amount", 400));
-  
-    await Coupon.create({ code: coupon, amount });
-  
-    return res.status(201).json({
-      success: true,
-      message: `Coupon ${coupon} Created Successfully`,
-    });
+  const { coupon, amount } = req.body;
+
+  if (!coupon || !amount)
+    return next(new ErrorHandler("Please enter both coupon and amount", 400));
+
+  await Coupon.create({ code: coupon, amount });
+
+  return res.status(201).json({
+    success: true,
+    message: `Coupon ${coupon} Created Successfully`,
+  });
 });
 export const applyDiscount = TryCatch(async (req, res, next) => {
   const { coupon } = req.query;

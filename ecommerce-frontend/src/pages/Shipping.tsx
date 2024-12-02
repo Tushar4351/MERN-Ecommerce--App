@@ -1,78 +1,69 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, useEffect, FormEvent } from "react";
 import { MapPin, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import Breadcrumb from "@/components/Shared/Breadcrumb";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { CartReducerInitialState } from "@/types/reducer-types";
-
-interface Address {
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  pinCode: string;
-  lat: number | null;
-  lng: number | null;
-}
-
-interface Location {
-  lat: number;
-  lng: number;
-}
+import axios from "axios";
+import { RootState, server } from "@/redux/store";
+import { saveShippingInfo } from "@/redux/reducer/cartReducer";
+import toast from "react-hot-toast";
 
 const AddressForm: React.FC = () => {
-  const [address, setAddress] = useState<Address>({
-    street: "",
-    city: "",
-    state: "",
-    country: "",
-    pinCode: "",
-    lat: null,
-    lng: null,
-  });
-  const { cartItems } = useSelector(
-    (state: { cartReducer: CartReducerInitialState }) => state.cartReducer
+  const { cartItems, coupon } = useSelector(
+    (state: RootState) => state.cartReducer
   );
-
-  const [userLocation, setUserLocation] = useState<Location | null>(null);
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [shippingInfo, setShippingInfo] = useState({
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pinCode: "",
+  });
+
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ): void => {
-    setAddress((prev) => ({
+    setShippingInfo((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const getLocation = (): void => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
-          const location: Location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setUserLocation(location);
+
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(saveShippingInfo(shippingInfo));
+
+    try {
+      const { data } = await axios.post(
+        `${server}/api/v1/payment/create?id=${user?._id}`,
+        {
+          items: cartItems,
+          shippingInfo,
+          coupon,
         },
-        (error: GeolocationPositionError) => {
-          console.error("Error getting location:", error);
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
+
+      navigate("/payment", {
+        state: data.clientSecret,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
     }
   };
-
-  const mapSrc: string = address.street
-    ? `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(
-        `${address.street}, ${address.city}, ${address.state}, ${address.country}`
-      )}`
-    : `https://www.google.com/maps/embed/v1/view?key=YOUR_API_KEY&center=0,0&zoom=2`;
 
   useEffect(() => {
     if (cartItems.length <= 0) return navigate("/cart");
@@ -92,26 +83,15 @@ const AddressForm: React.FC = () => {
         <div className="space-y-6 md:border-r-2 md:pr-8">
           <h2 className="text-2xl font-bold mb-6">Shipping Address</h2>
 
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              onClick={getLocation}
-              className="mb-6 w-full flex items-center justify-center gap-2"
-              variant="outline"
-            >
-              <MapPin className="h-5 w-5" />
-              Use Current Location
-            </Button>
-          </motion.div>
-
-          <div className="space-y-4 flex flex-col">
+          <form className="space-y-4 flex flex-col" onSubmit={submitHandler}>
             <div>
               <label className="block text-gray-700 mb-1">Address</label>
               <input
                 required
                 type="text"
-                name="street"
+                name="address"
                 placeholder="Address"
-                value={address.street}
+                value={shippingInfo.address}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border py-2 px-3"
               />
@@ -124,7 +104,7 @@ const AddressForm: React.FC = () => {
                 type="text"
                 placeholder="City"
                 name="city"
-                value={address.city}
+                value={shippingInfo.city}
                 onChange={handleInputChange}
                 className="w-full rounded-lg border py-2 px-3"
               />
@@ -137,7 +117,7 @@ const AddressForm: React.FC = () => {
                 type="text"
                 placeholder="State"
                 name="state"
-                value={address.state}
+                value={shippingInfo.state}
                 onChange={handleInputChange}
                 className="w-full rounded-md border p-2"
               />
@@ -148,7 +128,7 @@ const AddressForm: React.FC = () => {
               <select
                 name="country"
                 required
-                value={address.country}
+                value={shippingInfo.country}
                 onChange={handleInputChange}
                 className="w-full rounded-md border p-2"
               >
@@ -164,23 +144,23 @@ const AddressForm: React.FC = () => {
                 type="number"
                 placeholder="Pin Code"
                 name="pinCode"
-                value={address.pinCode}
+                value={shippingInfo.pinCode}
                 onChange={handleInputChange}
                 className="w-full rounded-md border p-2"
               />
             </div>
-          </div>
-
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link to="/payment">
-              <Button className="w-full mt-6 flex items-center justify-center gap-2">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                type="submit" // Add type="submit"
+                className="w-full flex items-center justify-center gap-2"
+              >
                 <CreditCard className="h-5 w-5" />
                 Proceed to Payment
               </Button>
-            </Link>
-          </motion.div>
+            </motion.div>
+          </form>
         </div>
-
+        {/* 
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -206,7 +186,7 @@ const AddressForm: React.FC = () => {
             <MapPin className="h-5 w-5 text-blue-600 mr-2" />
             <span className="text-sm font-medium">Your Location</span>
           </motion.div>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </div>
   );
