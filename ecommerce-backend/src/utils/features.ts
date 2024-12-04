@@ -95,12 +95,15 @@ interface MyDocument extends Document {
   createdAt: Date;
   discount?: number;
   total?: number;
+  [key: string]: any; // Allow additional properties
 }
+
+// Modify the type definition to be more flexible
 type FuncProps = {
   length: number;
-  docArr: MyDocument[];
+  docArr: Array<MyDocument | any>; // Allow more flexible array type
   today: Date;
-  property?: "discount" | "total";
+  property?: "discount" | "total" | string;
 };
 export const getChartData = ({
   length,
