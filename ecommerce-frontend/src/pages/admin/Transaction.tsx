@@ -8,7 +8,7 @@ import { UserReducerInitialState } from "@/types/reducer-types";
 import { useAllOrdersQuery } from "@/redux/api/orderApi";
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";
-import { server } from "@/redux/store";
+import { RootState, server } from "@/redux/store";
 import { LineSkeleton } from "@/components/Shared/Loader";
 
 interface DataType {
@@ -47,12 +47,9 @@ const columns: Column<DataType>[] = [
   },
 ];
 
-
-
 const Transaction = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
   const userId = user?._id;
 
   const { isLoading, isError, error, data } = useAllOrdersQuery(userId!);
@@ -62,6 +59,7 @@ const Transaction = () => {
     const err = error as CustomError;
     toast.error(err.data.message);
   }
+  console.log(data?.orders);
 
   useEffect(() => {
     if (data)
