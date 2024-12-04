@@ -17,6 +17,7 @@ import { useCheckAuthQuery } from "./redux/api/userApi";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
 import { UserReducerInitialState } from "./types/reducer-types";
 import ProtectedRoute from "./components/Shared/ProtectedRoute";
+import { RootState } from "./redux/store";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -69,9 +70,8 @@ const AppContent = () => {
   const location = useLocation();
   const isTransparent = location.pathname === "/login";
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const dispatch = useDispatch();
   const { data, error } = useCheckAuthQuery();

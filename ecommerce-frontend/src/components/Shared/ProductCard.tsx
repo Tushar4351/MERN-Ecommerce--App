@@ -2,7 +2,7 @@ import { server } from "@/redux/store";
 import { CartItem } from "@/types/types";
 import React from "react";
 import { BsCart3 } from "react-icons/bs";
-
+import { motion } from "framer-motion";
 type ProductsProps = {
   productId: string;
   photo: {
@@ -24,7 +24,12 @@ const ProductCard = ({
   handler,
 }: ProductsProps) => {
   return (
-    <div className="group relative">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      className="group relative w-[250px]"
+    >
       <div className="relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
         <img
           className="h-full w-full object-cover object-center lg:h-full lg:w-full transition duration-500 group-hover:scale-105"
@@ -60,7 +65,7 @@ const ProductCard = ({
         </div>
         <p className="text-sm font-medium text-gray-900">₹{price}</p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

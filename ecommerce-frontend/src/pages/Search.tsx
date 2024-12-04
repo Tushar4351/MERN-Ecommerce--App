@@ -12,6 +12,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { BiSearch } from "react-icons/bi";
 import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+import { SlidersHorizontal } from "lucide-react";
 
 const Search = () => {
   const {
@@ -26,6 +28,9 @@ const Search = () => {
   const [maxPrice, setMaxPrice] = useState(100000);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const categories = ["ALL", ...(categoriesResponse?.categories || [])];
 
   const {
     isLoading: productLoading,
@@ -67,8 +72,28 @@ const Search = () => {
         <Breadcrumb pageName="Home" currentPage="Products" />
       </div>
       <div className="flex gap-8 p-8">
-        <aside className="min-w-[20rem] p-8 shadow-md flex flex-col justify-start gap-10">
-          <h2 className="text-3xl font-semibold">Filters</h2>
+        <aside
+          className={`
+          fixed top-0 left-0 z-50 min-w-[20rem] h-screen p-8 shadow-md 
+          bg-white transform transition-transform duration-300 ease-in-out
+          ${
+            isSidebarOpen
+              ? "translate-x-1/2 translate-y-1/2"
+              : "-translate-x-full"
+          }
+          md:static md:translate-x-0 md:flex md:flex-col md:justify-start md:gap-10
+        `}
+        >
+          <div className="flex justify-between items-center mb-6 md:hidden">
+            <h2 className="text-3xl font-semibold">Filters</h2>
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="text-xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+          <h2 className="text-3xl font-semibold hidden md:flex">Filters</h2>
           <div>
             <h4 className="text-lg font-semibold mb-2">Sort</h4>
             <select
@@ -98,21 +123,37 @@ const Search = () => {
 
           <div>
             <h4 className="text-lg font-semibold mb-2">Category</h4>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="px-4 w-full border-2 py-2 rounded-md text-sm outline-none"
-            >
-              <option value="">ALL</option>
-              {!loadingCategories &&
-                categoriesResponse?.categories.map((i) => (
-                  <option key={i} value={i}>
-                    {i.toUpperCase()}
-                  </option>
-                ))}
-            </select>
+            <div className="space-y-2">
+              {loadingCategories ? (
+                <div className="animate-pulse">
+                  {[1, 2, 3, 4].map((_, index) => (
+                    <div
+                      key={index}
+                      className="w-full h-10 bg-gray-200 rounded-md mb-2"
+                    ></div>
+                  ))}
+                </div>
+              ) : (
+                categories.map((cat) => (
+                  <motion.button
+                    key={cat}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setCategory(cat === "ALL" ? "" : cat)}
+                    className={`w-full text-left px-3 py-2 rounded-md text-sm ${
+                      category === cat || (cat === "ALL" && category === "")
+                        ? "bg-green-50 text-green-500 font-medium"
+                        : "text-gray-600 hover:bg-green-50"
+                    }`}
+                  >
+                    {cat.toUpperCase()}
+                  </motion.button>
+                ))
+              )}
+            </div>
           </div>
         </aside>
+
         <main className="w-full">
           <div className="flex w-full mb-5 rounded bg-white">
             <input
@@ -125,16 +166,23 @@ const Search = () => {
 
             <button
               type="button"
-              className="m-2 rounded bg-blue-600 px-4 py-2 text-white"
+              className="m-2 rounded-full bg-green-400 p-2 md:p-4 text-white"
             >
               <BiSearch className="fill-current h-6 w-6" />{" "}
               {/* Using the BiSearch icon */}
+            </button>
+            <button
+              type="button"
+              className="m-2 md:hidden rounded-full bg-green-400 p-2 text-white"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              <SlidersHorizontal />
             </button>
           </div>
           {productLoading ? (
             <ProductSkeleton />
           ) : (
-            <div className="flex gap-4 flex-wrap overflow-y-auto">
+            <div className="flex gap-6 flex-wrap overflow-y-auto">
               {searchedData?.products.map((i) => (
                 <ProductCard
                   key={i._id}
