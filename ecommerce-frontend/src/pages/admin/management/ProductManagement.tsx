@@ -2,25 +2,23 @@ import { useState, ChangeEvent, useEffect, FormEvent } from "react";
 import AdminSidebar from "../../../components/Shared/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "@/types/reducer-types";
+import { Trash } from "lucide-react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteProductMutation,
   useProductDetailsQuery,
   useUpdateProductMutation,
 } from "@/redux/api/productApi";
-import { server } from "@/redux/store";
+import { RootState, server } from "@/redux/store";
 import { responseToast } from "@/utils/Features";
 
 const ProductManagement = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const params = useParams();
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useProductDetailsQuery(params.id!);
+  const { data, isError } = useProductDetailsQuery(params.id!);
 
   const { price, photo, name, stock, category } = data?.product || {
     photo: [],
@@ -133,12 +131,19 @@ const ProductManagement = () => {
               Not Available
             </span>
           )}
-          <h3 className="text-3xl font-bold text-center">${price}</h3>
+          <h3 className="text-3xl font-bold text-center">₹{price}</h3>
         </section>
         <article
           style={{ height: "85vh" }}
           className="w-full max-w-md p-8 flex flex-col relative rounded-xl bg-white text-gray-700 shadow-md"
+          
         >
+             <Button
+            className="bg-black-text hover:bg-black-text/90 w-1/6"
+            onClick={deleteHandler}
+          >
+            <Trash className="w-6 h-6 text-white " />
+          </Button>
           <form onSubmit={submitHandler}>
             <h2 className="antialiased tracking-normal text-2xl font-semibold leading-snug text-center mb-5">
               MANAGE

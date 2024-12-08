@@ -12,7 +12,6 @@ import { myCache } from "../app.js";
 import { invalidateCache } from "../utils/features.js";
 // import {faker} from "@faker-js/faker"
 
-
 // Revalidate on New,Update,Delete Product & on New Order
 export const getlatestProducts = TryCatch(async (req, res, next) => {
   let products;
@@ -83,11 +82,11 @@ export const newProduct = TryCatch(
     res: Response,
     next: NextFunction
   ) => {
-    const { name, price, stock, category } = req.body;
+    const { name, price, stock, gender, category } = req.body;
     const photo = req.file;
     if (!photo) return next(new ErrorHandler("Please Add Photo", 400));
 
-    if (!name || !price || !stock || !category) {
+    if (!name || !price || !stock || !category || !gender) {
       rm(photo.path, () => {
         console.log("Deleted");
       });
@@ -99,6 +98,7 @@ export const newProduct = TryCatch(
       name,
       price,
       stock,
+      gender,
       category: category.toLowerCase(),
       photo: photo.path,
     });
@@ -111,7 +111,7 @@ export const newProduct = TryCatch(
 );
 export const updateProduct = TryCatch(async (req, res, next) => {
   const { id } = req.params;
-  const { name, price, stock, category } = req.body;
+  const { name, price, stock, category, gender } = req.body;
   const photo = req.file;
   const product = await Product.findById(id);
 
@@ -128,6 +128,7 @@ export const updateProduct = TryCatch(async (req, res, next) => {
   if (price) product.price = price;
   if (stock) product.stock = stock;
   if (category) product.category = category;
+  if (gender) product.gender = gender;
 
   await product.save();
 

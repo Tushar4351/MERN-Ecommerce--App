@@ -1,11 +1,10 @@
-import { useState } from "react";
+
 import AdminSidebar from "../../../components/Shared/admin/AdminSidebar";
-import { OrderItemType, OrderType } from "../../../types";
+import { OrderItemType } from "../../../types";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "@/types/reducer-types";
 import {
   useDeleteOrderMutation,
   useOrderDetailsQuery,
@@ -13,6 +12,7 @@ import {
 } from "@/redux/api/orderApi";
 import { responseToast } from "@/utils/Features";
 import { Order } from "@/types/types";
+import { RootState } from "@/redux/store";
 
 const defaultData: Order = {
   shippingInfo: {
@@ -34,14 +34,12 @@ const defaultData: Order = {
 };
 
 const TransactionManagement = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const params = useParams();
   const navigate = useNavigate();
 
-  const { isLoading, data, isError } = useOrderDetailsQuery(params.id!);
+  const { data, isError } = useOrderDetailsQuery(params.id!);
   const {
     shippingInfo: { address, city, state, country, pinCode },
     orderItems,

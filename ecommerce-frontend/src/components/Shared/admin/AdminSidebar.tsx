@@ -9,7 +9,7 @@ import {
   FaStopwatch,
 } from "react-icons/fa";
 import { HiMenuAlt4 } from "react-icons/hi";
-
+import logo from "../../../assets/logo.png";
 import { IoIosPeople } from "react-icons/io";
 import {
   RiCoupon3Fill,
@@ -50,7 +50,9 @@ const AdminSidebar = () => {
           phoneActive ? (showModal ? "translate-x-0 overflow-y-auto" : "-translate-x-80") : ""
         }`}
       >
-        <h2>Logo.</h2>
+         <Link to={"/"} className="">
+            <img src={logo} className="ml-3 mt-5 h-7 sm:h-10 rounded-lg" alt="Logo" />
+          </Link>
         <DivOne location={location} />
         <DivTwo location={location} />
         <DivThree location={location} />

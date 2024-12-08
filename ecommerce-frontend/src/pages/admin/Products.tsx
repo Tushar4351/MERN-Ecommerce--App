@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";
 import { UserReducerInitialState } from "@/types/reducer-types";
-import { server } from "@/redux/store";
+import { RootState, server } from "@/redux/store";
 import { LineSkeleton } from "@/components/Shared/Loader";
 
 interface DataType {
@@ -47,9 +47,7 @@ const columns: Column<DataType>[] = [
 ];
 
 const Products = () => {
-  const { user } = useSelector(
-    (state: { userReducer: UserReducerInitialState }) => state.userReducer
-  );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const userId = user?._id;
 
@@ -66,7 +64,7 @@ const Products = () => {
     if (data)
       setRows(
         data.products.map((i) => ({
-          photo: <img src={`${server}/${i.photo}`} />,
+          photo: <img src={`${server}/${i.photo}`} className="w-20"/>,
           name: i.name,
           price: i.price,
           stock: i.stock,

@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { IoSearchOutline } from "react-icons/io5";
 import { BsCart3 } from "react-icons/bs";

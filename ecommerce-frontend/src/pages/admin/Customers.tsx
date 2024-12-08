@@ -48,7 +48,6 @@ const columns: Column<DataType>[] = [
   },
 ];
 
-
 const Customers = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
 
@@ -73,15 +72,7 @@ const Customers = () => {
     if (data)
       setRows(
         data.users.map((i) => ({
-          avatar: (
-            <img
-              style={{
-                borderRadius: "50%",
-              }}
-              src={i.photo}
-              alt={i.name}
-            />
-          ),
+          avatar: <img className="rounded-lg" src={i.photo} alt={i.name} />,
           name: i.name,
           email: i.email,
           gender: i.gender,

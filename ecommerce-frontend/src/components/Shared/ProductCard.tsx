@@ -1,6 +1,5 @@
 import { server } from "@/redux/store";
 import { CartItem } from "@/types/types";
-import React from "react";
 import { BsCart3 } from "react-icons/bs";
 import { motion } from "framer-motion";
 type ProductsProps = {
@@ -59,7 +58,7 @@ const ProductCard = ({
           <h3 className="text-sm text-gray-700">
             <a href={`/product/${productId}`}>
               <span aria-hidden="true" className="absolute inset-0" />
-              <p className="text-lg font-semibold text-gray-900">{name}</p>
+              <p className="text-base font-semibold text-gray-900">{name}</p>
             </a>
           </h3>
         </div>

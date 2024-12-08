@@ -6,6 +6,11 @@ const productSchema = new mongoose.Schema(
     photo: { type: String, required: [true, "Please add photo"] },
     price: { type: Number, required: [true, "Please Enter the Price"] },
     stock: { type: Number, required: [true, "Please Enter the Stock"] },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: [true, "Please enter gender"],
+    },
     category: {
       type: String,
       required: [true, "Please Enter Product Category"],
