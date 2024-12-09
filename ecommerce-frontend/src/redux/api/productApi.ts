@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AllProductsResponse,
-  AllReviewsResponse,
   CategoriesResponse,
   DeleteProductRequest,
-  DeleteReviewRequest,
+  FilterProductsRequest,
   MessageResponse,
   NewProductRequest,
-  NewReviewRequest,
   ProductResponse,
   SearchProductsRequest,
   SearchProductsResponse,
@@ -48,6 +46,19 @@ export const productAPI = createApi({
       },
       providesTags: ["product"],
     }),
+
+    productsFilter: builder.query<SearchProductsResponse, FilterProductsRequest>({
+      query: ({ gender, category, page }) => {
+        let base = `filter?page=${page}`;
+
+        if (gender) base += `&gender=${gender}`;
+        if (category) base += `&category=${category}`;
+
+        return base;
+      },
+      providesTags: ["product"],
+    }),
+
     productDetails: builder.query<ProductResponse, string>({
       query: (id) => id,
       providesTags: ["product"],
@@ -87,4 +98,5 @@ export const {
   useNewProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useProductsFilterQuery,
 } = productAPI;

@@ -5,7 +5,6 @@ import { Column } from "react-table";
 import TableHOC from "../components/Shared/admin/TableHOC";
 import Breadcrumb from "@/components/Shared/Breadcrumb";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "@/types/reducer-types";
 import { useMyOrdersQuery } from "@/redux/api/orderApi";
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";

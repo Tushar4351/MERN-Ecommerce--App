@@ -32,14 +32,13 @@ const Header = ({ user }: PropsType) => {
 
   const [logout] = useLogoutMutation();
 
-
   const openSidebar = () => setIsOpen(true);
   const closeSidebar = () => setIsOpen(false);
 
   const LogoutHandler = async () => {
     try {
       await logout().unwrap();
-     
+
       dispatch(userNotExist());
       toast.success("Sign Out Successfully");
       window.location.reload();

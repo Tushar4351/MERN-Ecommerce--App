@@ -58,6 +58,11 @@ export type SearchProductsRequest = {
   search: string;
   sort: string;
 };
+export type FilterProductsRequest = {
+  page: number;
+  gender: string;
+  category: string;
+};
 export type ProductResponse = {
   success: boolean;
   product: Product;

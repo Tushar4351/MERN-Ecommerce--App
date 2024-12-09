@@ -49,15 +49,10 @@ const Home = () => {
             Discover the Perfect Blend of Comfort and Trend with Our Exclusive
             Collection. Explore Deals on Jeans, Sneakers, and More!
           </p>
-          {/* <div className="w-full flex justify-end">
-            <Link to="/search" className="findmore text-gray-500 text-lg">
-              More
-            </Link>
-          </div> */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full">
             <WobbleCard
               containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
-              className=""
+              navigateTo="/category/jeans"
             >
               <div className="max-w-xs">
                 <h2 className="text-left uppercase text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
@@ -74,7 +69,11 @@ const Home = () => {
                 className="absolute w-1/2 h-full -right-4 lg:-right-[10%] grayscale filter  md:-bottom-2 object-contain rounded-2xl"
               />
             </WobbleCard>
-            <WobbleCard containerClassName="col-span-1 min-h-[300px]">
+
+            <WobbleCard
+              containerClassName="col-span-1 min-h-[300px]"
+              navigateTo="/category/t-shirts"
+            >
               <div className="max-w-xs">
                 <h2 className="text-left uppercase text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                   T-Shirts
@@ -90,7 +89,11 @@ const Home = () => {
                 className="absolute w-1/2 h-full -right-4 lg:right-[22%] grayscale filter -bottom-28 md:-bottom-28 object-contain rounded-2xl"
               />
             </WobbleCard>
-            <WobbleCard containerClassName="col-span-1 min-h-[300px]">
+
+            <WobbleCard
+              containerClassName="col-span-1 min-h-[300px]"
+              navigateTo="/category/shirts"
+            >
               <div className="max-w-xs">
                 <h2 className="text-left uppercase text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                   Shirts
@@ -106,7 +109,11 @@ const Home = () => {
                 className="absolute w-1/2 h-full -right-4 lg:right-[22%] grayscale filter -bottom-28 md:-bottom-28 object-contain rounded-2xl"
               />
             </WobbleCard>
-            <WobbleCard containerClassName="col-span-1 lg:col-span-2 bg-green-700 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
+
+            <WobbleCard
+              containerClassName="col-span-1 lg:col-span-2 bg-green-700 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]"
+              navigateTo="/category/footwears"
+            >
               <div className="max-w-sm">
                 <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                   Footwears
@@ -135,7 +142,7 @@ const Home = () => {
           </h1>
         </div>
         <div className="max-w-7xl mx-auto w-full">
-          <div className="mt-6 flex gap-6 flex-wrap overflow-y-auto">
+          <div className="mt-6 flex gap-6 flex-wrap">
             {isLoading ? (
               <ProductSkeleton />
             ) : (
@@ -166,18 +173,15 @@ const Home = () => {
           </Link>
         </div>
         <div className="md:h-[40rem] relative flex items-center justify-center gap-4 max-w-7xl mx-auto w-full">
-          <DirectionAwareHover imageUrl={men}>
-            <p className="font-bold text-2xl uppercase">Men</p>
+          <DirectionAwareHover imageUrl={men} navigateTo="/gender/male">
+            <p className="font-bold text-2xl uppercase">Male</p>
           </DirectionAwareHover>
-          <DirectionAwareHover imageUrl={women}>
-            <p className="font-bold text-2xl uppercase">WoMen</p>
+
+          <DirectionAwareHover imageUrl={women} navigateTo="/gender/female">
+            <p className="font-bold text-2xl uppercase">Female</p>
           </DirectionAwareHover>
         </div>
       </section>
-
-      {/* <section>
-        <Testimonials />
-      </section>  */}
     </div>
   );
 };

@@ -6,6 +6,7 @@ import {
   getAdminProducts,
   getAllCategories,
   getAllProducts,
+  getProductsFilter,
   getSingleProduct,
   getlatestProducts,
   newProduct,
@@ -25,6 +26,9 @@ app.get("/latest", getlatestProducts);
 
 //To get all unique Categories  - /api/v1/product/categories
 app.get("/categories", getAllCategories);
+
+//To get all gender filter products  - /api/v1/product/filter
+app.get("/filter", getProductsFilter);
 
 //To get all Products   - /api/v1/product/admin-products
 app.get("/admin-products", adminOnly, getAdminProducts);

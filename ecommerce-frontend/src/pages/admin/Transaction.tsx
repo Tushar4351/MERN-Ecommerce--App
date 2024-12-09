@@ -1,14 +1,13 @@
 import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
 import { Column } from "react-table";
 import { Link } from "react-router-dom";
-import { ReactElement, useState, useCallback, useEffect } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import TableHOC from "../../components/Shared/admin/TableHOC";
 import { useSelector } from "react-redux";
-import { UserReducerInitialState } from "@/types/reducer-types";
 import { useAllOrdersQuery } from "@/redux/api/orderApi";
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";
-import { RootState, server } from "@/redux/store";
+import { RootState} from "@/redux/store";
 import { LineSkeleton } from "@/components/Shared/Loader";
 
 interface DataType {

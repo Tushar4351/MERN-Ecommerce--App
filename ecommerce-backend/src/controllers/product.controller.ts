@@ -210,6 +210,65 @@ export const getAllProducts = TryCatch(
   }
 );
 
+export const getProductsFilter = TryCatch(async (req, res, next) => {
+    const { gender, category } = req.query;
+
+
+    if (!gender && !category) {
+      return next(new ErrorHandler("Either gender or category is required", 400));
+    }
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(process.env.PRODUCT_PER_PAGE) || 8;
+    const skip = (page - 1) * limit;
+
+    // Determine the filter type and value
+    const filterType = gender ? 'gender' : 'category';
+    const filterValue = (gender || category) as string;
+
+    const cacheKey = `products-${filterType}-${filterValue.toLowerCase()}-page-${page}`;
+
+    // Check if result is in cache
+    if (myCache.has(cacheKey)) {
+      const cachedResult = JSON.parse(myCache.get(cacheKey) as string);
+      return res.status(200).json(cachedResult);
+    }
+
+    // Construct base query
+    const baseQuery: BaseQuery = { 
+      [filterType]: filterValue.toLowerCase() 
+    };
+
+    const productsPromise = Product.find(baseQuery)
+      .limit(limit)
+      .skip(skip);
+
+    const [products, filteredOnlyProduct] = await Promise.all([
+      productsPromise,
+      Product.find(baseQuery),
+    ]);
+
+    const totalPage = Math.ceil(filteredOnlyProduct.length / limit);
+
+    const result = {
+      success: true,
+      products,
+      totalPage,
+    };
+
+    // Cache the result
+    myCache.set(cacheKey, JSON.stringify(result));
+
+    return res.status(200).json(result);
+  }
+);
+
+
+
+
+
+
+
 // const generateRandomProducts = async (count: number = 10) => {
 //   const products = [];
 

@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useCheckAuthQuery } from "./redux/api/userApi";
 import { userExist, userNotExist } from "./redux/reducer/userReducer";
-import { UserReducerInitialState } from "./types/reducer-types";
 import ProtectedRoute from "./components/Shared/ProtectedRoute";
 import { RootState } from "./redux/store";
 
@@ -30,6 +29,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Orders = lazy(() => import("./pages/Orders"));
 const OrderDetails = lazy(() => import("./pages/OrderDetails"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const CategoryProducts = lazy(() => import("./pages/CategoryProducts"));
 // Admin Routes Importing
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Products = lazy(() => import("./pages/admin/Products"));
@@ -70,7 +70,7 @@ const AppContent = () => {
   const location = useLocation();
   const isTransparent = location.pathname === "/login";
   const isAdminRoute = location.pathname.startsWith("/admin");
-  
+
   const { user } = useSelector((state: RootState) => state.userReducer);
 
   const dispatch = useDispatch();
@@ -96,7 +96,8 @@ const AppContent = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
-
+          <Route path="/category/:category" element={<CategoryProducts />} />
+          <Route path="/gender/:gender" element={<CategoryProducts />} />
           {/* Not logged In Route */}
           <Route
             path="/login"

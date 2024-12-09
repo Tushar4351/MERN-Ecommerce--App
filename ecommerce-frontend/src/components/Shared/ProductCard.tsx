@@ -27,7 +27,7 @@ const ProductCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
-      className="group relative w-[250px]"
+      className="group relative w-[236px]"
     >
       <div className="relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
         <img
@@ -56,10 +56,8 @@ const ProductCard = ({
       <div className="mt-4 flex justify-between items-center">
         <div>
           <h3 className="text-sm text-gray-700">
-            <a href={`/product/${productId}`}>
-              <span aria-hidden="true" className="absolute inset-0" />
-              <p className="text-base font-semibold text-gray-900">{name}</p>
-            </a>
+            <span aria-hidden="true" className="absolute inset-0" />
+            <p className="text-base font-semibold text-gray-900">{name}</p>
           </h3>
         </div>
         <p className="text-sm font-medium text-gray-900">₹{price}</p>

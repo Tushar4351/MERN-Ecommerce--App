@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export const DirectionAwareHover = ({
   imageUrl,
@@ -8,14 +9,19 @@ export const DirectionAwareHover = ({
   childrenClassName,
   imageClassName,
   className,
+  navigateTo,
+  onClick,
 }: {
   imageUrl: string;
   children: React.ReactNode | string;
   childrenClassName?: string;
   imageClassName?: string;
   className?: string;
+  navigateTo?: string;
+  onClick?: () => void;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const [direction, setDirection] = useState<
     "top" | "bottom" | "left" | "right" | string
   >("left");
@@ -43,6 +49,17 @@ export const DirectionAwareHover = ({
         break;
     }
   };
+  const handleClick = () => {
+    // Priority: custom onClick > navigation
+    if (onClick) {
+      onClick();
+      return;
+    }
+
+    if (navigateTo) {
+      navigate(navigateTo);
+    }
+  };
 
   const getDirection = (
     ev: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -57,6 +74,7 @@ export const DirectionAwareHover = ({
 
   return (
     <motion.div
+      onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       ref={ref}
       className={cn(
@@ -71,7 +89,7 @@ export const DirectionAwareHover = ({
           whileHover={direction}
           exit="exit"
         >
-          <motion.div className="absolute inset-0 w-full h-full hover:bg-black-full hover:bg-opacity-10 z-10 transition duration-500" />
+          <motion.div className="absolute inset-0 w-full h-full hover:bg-black-full hover:bg-opacity-20 z-10 transition duration-500" />
           <motion.div
             variants={variants}
             className="h-full w-full relative bg-gray-100"
@@ -116,34 +134,5 @@ const variants = {
   },
   right: {
     x: -20,
-  },
-};
-
-const textVariants = {
-  initial: {
-    y: 0,
-    x: 0,
-    opacity: 0,
-  },
-  exit: {
-    y: 0,
-    x: 0,
-    opacity: 0,
-  },
-  top: {
-    y: -20,
-    opacity: 1,
-  },
-  bottom: {
-    y: 2,
-    opacity: 1,
-  },
-  left: {
-    x: -2,
-    opacity: 1,
-  },
-  right: {
-    x: 20,
-    opacity: 1,
   },
 };
