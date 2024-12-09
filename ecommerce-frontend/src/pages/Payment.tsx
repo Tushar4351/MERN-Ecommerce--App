@@ -1,7 +1,6 @@
 import Breadcrumb from "@/components/Shared/Breadcrumb";
 import { motion } from "framer-motion";
-import { CreditCard, Calendar, Lock, Check } from "lucide-react";
-import { RiVisaLine } from "react-icons/ri";
+import { CreditCard, Check } from "lucide-react";
 import {
   Elements,
   PaymentElement,

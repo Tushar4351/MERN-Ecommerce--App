@@ -1,6 +1,5 @@
 import AdminSidebar from "@/components/Shared/admin/AdminSidebar";
 import { DoughnutChart, PieChart } from "@/components/Shared/admin/Charts";
-import { categories } from "../../../assets/data.json";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { usePieQuery } from "@/redux/api/dashboardApi";

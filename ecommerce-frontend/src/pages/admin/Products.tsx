@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";
-import { UserReducerInitialState } from "@/types/reducer-types";
 import { RootState, server } from "@/redux/store";
 import { LineSkeleton } from "@/components/Shared/Loader";
 

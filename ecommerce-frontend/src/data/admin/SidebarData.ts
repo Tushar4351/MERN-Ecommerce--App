@@ -94,9 +94,3 @@ interface SidebarItem {
     },
   ];
   
-  interface LiProps {
-    url: string;
-    text: string;
-    location: Location;
-    Icon: IconType;
-  }

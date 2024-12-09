@@ -1,9 +1,9 @@
 import React, { useState, ChangeEvent, useEffect, FormEvent } from "react";
-import { MapPin, CreditCard } from "lucide-react";
+import {  CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Breadcrumb from "@/components/Shared/Breadcrumb";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { RootState, server } from "@/redux/store";

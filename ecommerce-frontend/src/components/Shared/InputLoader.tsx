@@ -1,5 +1,5 @@
-/* From Uiverse.io by Javierrocadev */
-import React from "react";
+
+
 
 const InputLoader = () => {
   return (

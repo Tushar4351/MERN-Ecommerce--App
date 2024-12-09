@@ -2,7 +2,7 @@ import AdminSidebar from "../../components/Shared/admin/AdminSidebar";
 import TableHOC from "../../components/Shared/admin/TableHOC";
 import { FaTrash } from "react-icons/fa";
 import { Column } from "react-table";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ReactElement } from "react";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
