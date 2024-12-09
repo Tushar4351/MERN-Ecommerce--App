@@ -15,24 +15,12 @@ export default function ScrollProvider({ children }: ScrollProviderProps) {
 
     scrollRef.current = new LocomotiveScroll({
       el: containerRef.current,
-      smooth: true,
-      multiplier: 0.55, // Reduced for smoother scrolling
-      lerp: 0.03, // Reduced for smoother interpolation
+      smooth: true, // Enable smooth scrolling for all devices
       getDirection: true,
       getSpeed: true,
       class: "is-revealed",
       reloadOnContextChange: true,
       touchMultiplier: 1.5, // Adjusted for mobile
-      smartphone: {
-        smooth: true,
-        multiplier: 0.55,
-        lerp: 0.03,
-      },
-      tablet: {
-        smooth: true,
-        multiplier: 0.55,
-        lerp: 0.03,
-      },
     });
 
     // Optimize performance with requestAnimationFrame

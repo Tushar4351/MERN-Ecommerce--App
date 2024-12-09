@@ -27,7 +27,6 @@ const Shipping = lazy(() => import("./pages/Shipping"));
 const Payment = lazy(() => import("./pages/Payment"));
 const Login = lazy(() => import("./pages/Login"));
 const Orders = lazy(() => import("./pages/Orders"));
-const OrderDetails = lazy(() => import("./pages/OrderDetails"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const CategoryProducts = lazy(() => import("./pages/CategoryProducts"));
 // Admin Routes Importing
@@ -111,7 +110,6 @@ const AppContent = () => {
           <Route element={<ProtectedRoute isAuthenticated={!!user} />}>
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="/order/:id" element={<OrderDetails />} />
             <Route path="/payment" element={<Payment />} />
           </Route>
 

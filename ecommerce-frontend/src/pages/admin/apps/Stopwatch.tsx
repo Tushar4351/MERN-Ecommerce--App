@@ -9,7 +9,9 @@ const Stopwatch: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      clearInterval(intervalId);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
     };
   }, [intervalId]);
 
@@ -24,13 +26,17 @@ const Stopwatch: React.FC = () => {
   }, [isRunning]);
 
   const stopTimer = useCallback(() => {
-    clearInterval(intervalId);
-    setIntervalId(null);
-    setIsRunning(false);
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+      setIsRunning(false);
+    }
   }, [intervalId]);
 
   const resetTimer = useCallback(() => {
-    clearInterval(intervalId);
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
     setIntervalId(null);
     setIsRunning(false);
     setTime(0);
