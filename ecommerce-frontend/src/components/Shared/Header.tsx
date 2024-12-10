@@ -28,7 +28,8 @@ const Header = ({ user }: PropsType) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   const [logout] = useLogoutMutation();
 
@@ -48,7 +49,8 @@ const Header = ({ user }: PropsType) => {
   };
 
   // Set background color based on pathname
-  const isTransparent = location.pathname === "/";
+  const isTransparent =
+    location.pathname === "/" || location.pathname === "/login";
 
   const navClass = isTransparent
     ? "bg-transparent fixed w-full z-20 top-0 start-0 hover:border-b hover:border-gray-200 hover:bg-white transition-colors duration-300 ease-in-out"
@@ -56,23 +58,24 @@ const Header = ({ user }: PropsType) => {
 
   return (
     <>
-      <nav className={navClass}>
-        <div className="px-10 flex flex-wrap items-center justify-between mx-auto p-3">
-          <button className="hover:text-gray-600" onClick={openSidebar}>
-            <RiMenu2Line className="w-5 h-5" />
-          </button>
-          <Link to={"/"} className="flex items-center space-x-3">
-            <img src={logo} className=" h-7 sm:h-10 rounded-lg" alt="Logo" />
-          </Link>
-          <div className="flex space-x-3 sm:space-x-5 justify-center items-center">
-            <Link to={"/search"}>
-              <IoSearchOutline className="w-5 h-5" />
+      {/* Conditionally render nav */}
+      {!isAdminRoute && (
+        <nav className={navClass}>
+          <div className="px-10 flex flex-wrap items-center justify-between mx-auto p-3">
+            <button className="hover:text-gray-600" onClick={openSidebar}>
+              <RiMenu2Line className="w-5 h-5" />
+            </button>
+            <Link to={"/"} className="flex items-center space-x-3">
+              <img src={logo} className="h-7 sm:h-10 rounded-lg" alt="Logo" />
             </Link>
-            <Link to={"/cart"}>
-              <BsCart3 className="w-5 h-5" />
-            </Link>
-            {user?._id ? (
-              <>
+            <div className="flex space-x-3 sm:space-x-5 justify-center items-center">
+              <Link to={"/search"}>
+                <IoSearchOutline className="w-5 h-5" />
+              </Link>
+              <Link to={"/cart"}>
+                <BsCart3 className="w-5 h-5" />
+              </Link>
+              {user?._id ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <AiOutlineUser className="w-5 h-5" />
@@ -96,15 +99,15 @@ const Header = ({ user }: PropsType) => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </>
-            ) : (
-              <Link to={"/login"}>
-                <AiOutlineUser className="w-5 h-5" />
-              </Link>
-            )}
+              ) : (
+                <Link to={"/login"}>
+                  <AiOutlineUser className="w-5 h-5" />
+                </Link>
+              )}
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      )}
 
       {/* Sidebar */}
       <div
@@ -124,7 +127,7 @@ const Header = ({ user }: PropsType) => {
               <IoClose className="w-6 h-6" />
             </button>
           </div>
-          <Separator className="opacity-20 text-[#DEDEDE] " />
+          <Separator className="opacity-20 text-[#DEDEDE]" />
 
           <ul className="p-8 uppercase opacity-60 text-[#DEDEDE]">
             <li>

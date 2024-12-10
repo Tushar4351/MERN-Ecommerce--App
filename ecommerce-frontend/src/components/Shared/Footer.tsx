@@ -1,83 +1,89 @@
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaFacebook, FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 const Footer = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
   return (
-    <section className="bg-black-150">
-      <footer className="max-w-7xl mx-auto w-full px-3 py-12 sm:p-12 xl:px-0 xl:py-12 ">
-        <div className="container mx-auto px-2">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-32">
-            <div>
-              <Link to={"/"} className="flex items-center ">
-                <img
-                  src={logo}
-                  className="h-6 mb-3 rounded-md"
-                  alt="FlowBite Logo"
-                />
-              </Link>
-              <p className="text-gray-400">
-                Your trusted fashion
-                <br />
-                companion
-              </p>
-            </div>
+    <>
+      {!isAdminRoute && (
+        <section className="bg-black-150">
+          <footer className="max-w-7xl mx-auto w-full px-3 py-12 sm:p-12 xl:px-0 xl:py-12 ">
+            <div className="container mx-auto px-2">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-32">
+                <div>
+                  <Link to={"/"} className="flex items-center ">
+                    <img
+                      src={logo}
+                      className="h-6 mb-3 rounded-md"
+                      alt="FlowBite Logo"
+                    />
+                  </Link>
+                  <p className="text-gray-400">
+                    Your trusted fashion
+                    <br />
+                    companion
+                  </p>
+                </div>
 
-            <div>
-              <h4 className="font-bold text-white mb-4">NAVIGATION</h4>
-              <ul className="space-y-2">
-                {["Home", "Search", "About", "Contact"].map((item) => (
-                  <li key={item}>
-                    <Link
-                      to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                      className="text-gray-400 hover:text-gray-200"
-                    >
-                      {item}
+                <div>
+                  <h4 className="font-bold text-white mb-4">NAVIGATION</h4>
+                  <ul className="space-y-2">
+                    {["Home", "Search", "About", "Contact"].map((item) => (
+                      <li key={item}>
+                        <Link
+                          to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                          className="text-gray-400 hover:text-gray-200"
+                        >
+                          {item}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-white mb-4">CATEGORIES</h4>
+                  <ul className="space-y-2">
+                    {["Men", "Women"].map((item) => (
+                      <li key={item}>
+                        <Link
+                          to={`/category/${item.toLowerCase()}`}
+                          className="text-gray-400 hover:text-gray-200"
+                        >
+                          {item}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <div className="flex">
+                    <Link to="/facebook">
+                      <FaFacebook className="w-6 h-6 text-white hover:text-green-150 ms-5" />
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-white mb-4">CATEGORIES</h4>
-              <ul className="space-y-2">
-                {["Men", "Women"].map((item) => (
-                  <li key={item}>
-                    <Link
-                      to={`/category/${item.toLowerCase()}`}
-                      className="text-gray-400 hover:text-gray-200"
-                    >
-                      {item}
+                    <Link to="/discord">
+                      <FaDiscord className="w-6 h-6 text-white hover:text-green-150 ms-5" />
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    <Link to="/twitter">
+                      <FaTwitter className="w-6 h-6 text-white hover:text-green-150 ms-5" />
+                    </Link>
+                    <Link to="/github">
+                      <FaGithub className="w-6 h-6 text-white hover:text-green-150 ms-5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
 
-            <div>
-              <div className="flex">
-                <Link to="/facebook">
-                  <FaFacebook className="w-6 h-6 text-white hover:text-green-150 ms-5" />
-                </Link>
-                <Link to="/discord">
-                  <FaDiscord className="w-6 h-6 text-white hover:text-green-150 ms-5" />
-                </Link>
-                <Link to="/twitter">
-                  <FaTwitter className="w-6 h-6 text-white hover:text-green-150 ms-5" />
-                </Link>
-                <Link to="/github">
-                  <FaGithub className="w-6 h-6 text-white hover:text-green-150 ms-5" />
-                </Link>
+              <div className="text-center mt-12 text-white">
+                All Rights Reserved By ©NexCartia
               </div>
             </div>
-          </div>
-
-          <div className="text-center mt-12 text-white">
-            All Rights Reserved By ©NexCartia
-          </div>
-        </div>
-      </footer>
-    </section>
+          </footer>
+        </section>
+      )}
+    </>
   );
 };
 
