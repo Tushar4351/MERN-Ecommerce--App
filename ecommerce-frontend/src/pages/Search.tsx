@@ -53,9 +53,9 @@ const Search = () => {
     dispatch(addToCart(cartItem));
     toast.success("Added to cart");
   };
-
+  const totalPage = searchedData?.totalPage;
   const isPrevPage = page > 1;
-  const isNextPage = page < 4;
+  const isNextPage = page < totalPage!;
 
   if (isError) {
     const err = error as CustomError;
@@ -197,8 +197,9 @@ const Search = () => {
             </div>
           )}
           {searchedData && searchedData.totalPage > 1 && (
-            <article className="table-pagination">
+            <article className="flex mt-4 justify-center items-center gap-4">
               <button
+                className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!isPrevPage}
                 onClick={() => setPage((prev) => prev - 1)}
               >
@@ -208,6 +209,7 @@ const Search = () => {
                 {page} of {searchedData.totalPage}
               </span>
               <button
+                className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!isNextPage}
                 onClick={() => setPage((prev) => prev + 1)}
               >
