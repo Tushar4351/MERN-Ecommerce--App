@@ -4,10 +4,7 @@ import { BsCart3 } from "react-icons/bs";
 import { motion } from "framer-motion";
 type ProductsProps = {
   productId: string;
-  photo: {
-    url: string;
-    public_id: string;
-  }[];
+  photo: string;
   name: string;
   price: number;
   stock: number;

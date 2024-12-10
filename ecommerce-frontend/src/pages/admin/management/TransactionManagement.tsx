@@ -51,6 +51,8 @@ const TransactionManagement = () => {
     discount,
     shippingCharges,
   } = data?.order || defaultData;
+  console.log(orderItems);
+  
 
   const [updateOrder] = useUpdateOrderMutation();
   const [deleteOrder] = useDeleteOrderMutation();
@@ -91,7 +93,7 @@ const TransactionManagement = () => {
 
           {orderItems.map((item) => (
             <ProductCard
-              key={item._id} // Add unique key prop here
+              key={item._id} 
               name={item.name}
               photo={item.photo}
               _id={item._id}

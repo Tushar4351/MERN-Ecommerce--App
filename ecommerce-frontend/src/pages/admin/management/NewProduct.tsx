@@ -22,29 +22,6 @@ const NewProduct = () => {
 
   const navigate = useNavigate();
 
-  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      if (!name || !price || stock < 0 || !category || !gender) return;
-
-      const formData = new FormData();
-
-      formData.set("name", name);
-      formData.set("price", price.toString());
-      formData.set("stock", stock.toString());
-      formData.set("category", category);
-      formData.set("gender", gender);
-      formData.set("photo", photo);
-
-      const userId = user?._id;
-      const res = await newProduct({ id: userId!, formData });
-
-      responseToast(res, navigate, "/admin/product");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
 
@@ -60,6 +37,34 @@ const NewProduct = () => {
       };
     }
   };
+
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      if (!name || !price || stock < 0 || !category || !gender) return;
+
+      const formData = new FormData();
+
+      formData.set("name", name);
+      formData.set("price", price.toString());
+      formData.set("stock", stock.toString());
+      formData.set("category", category);
+      formData.set("gender", gender);
+      if (photo) {
+        formData.set("photo", photo);
+      }
+  
+
+      const userId = user?._id;
+      const res = await newProduct({ id: userId!, formData });
+
+      responseToast(res, navigate, "/admin/product");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
 
   return (
     <div className="flex h-screen overflow-hidden">
