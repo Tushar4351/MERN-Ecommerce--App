@@ -107,11 +107,17 @@ body {
 .font-sora-extrabold {
   font-weight: 800;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
 }
 
 a {
@@ -360,39 +366,4 @@ span {
 
 .carousel-image {
   transition: opacity 1s ease-in-out; /* Increase the transition duration to 1 second */
-}
-
-html.has-scroll-smooth {
-  overflow: hidden;
-}
-
-html.has-scroll-dragging {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.has-scroll-smooth body {
-  overflow: hidden;
-}
-
-.has-scroll-smooth [data-scroll-container] {
-  min-height: 100vh;
-  will-change: transform;
-}
-
-[data-scroll-container] {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.locomotive-scroll-container {
-  transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Optimize performance */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
