@@ -49,7 +49,6 @@ const CheckOutForm = () => {
     setIsProcessing(true);
 
     const userId = user?._id;
-  
 
     const orderData: NewOrderRequest = {
       shippingInfo,
@@ -107,9 +106,8 @@ const Payment = () => {
   const location = useLocation();
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const {
-    shippingInfo,
-  } = useSelector((state: RootState) => state.cartReducer);
+  const { shippingInfo, subtotal, tax, total, shippingCharges, discount } =
+    useSelector((state: RootState) => state.cartReducer);
 
   const clientSecret: string | undefined = location.state;
 
@@ -182,9 +180,9 @@ const Payment = () => {
             <h2 className="text-xl font-semibold text-gray-900 mb-3">
               Shipping To
             </h2>
-            <h3 className="font-sora-medium text-md">{ user?.name}</h3>
+            <h3 className="font-sora-medium text-md">{user?.name}</h3>
             <p className="text-gray-500 text-sm">
-              {shippingInfo.address},{shippingInfo.city},{shippingInfo.pinCode}
+              {shippingInfo.address},{shippingInfo.pinCode}
             </p>
           </div>
           <div className="h-1/2 p-6">
@@ -199,13 +197,13 @@ const Payment = () => {
                     Original price
                   </dt>
                   <dd className="text-base font-medium text-gray-900 ">
-                    ₹3000
+                    ₹{subtotal}
                   </dd>
                 </dl>
 
                 <dl className="flex items-center justify-between gap-4">
                   <dt className="text-base font-normal text-gray-500 ">Tax:</dt>
-                  <dd className="text-base font-medium">₹540</dd>
+                  <dd className="text-base font-medium">₹{tax}</dd>
                 </dl>
 
                 <dl className="flex items-center justify-between gap-4">
@@ -213,7 +211,7 @@ const Payment = () => {
                     Discount:
                   </dt>
                   <dd className="text-base font-medium text-green-600 ">
-                    - ₹400
+                    - ₹{discount}
                   </dd>
                 </dl>
 
@@ -221,13 +219,15 @@ const Payment = () => {
                   <dt className="text-base font-normal text-gray-500">
                     Shipping Charges:
                   </dt>
-                  <dd className="text-base font-medium text-gray-900 ">₹100</dd>
+                  <dd className="text-base font-medium text-gray-900 ">
+                    ₹{shippingCharges}
+                  </dd>
                 </dl>
               </div>
 
               <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
                 <dt className="text-base font-bold text-gray-900 ">Total:</dt>
-                <dd className="text-base font-bold text-gray-900 ">₹3640</dd>
+                <dd className="text-base font-bold text-gray-900 ">₹{total}</dd>
               </dl>
             </div>
           </div>
