@@ -205,7 +205,9 @@ const Search = () => {
               >
                 Prev
               </button>
-              <span>{page} of 4</span>
+              <span>
+                {page} of {searchedData.totalPage}
+              </span>
               <button
                 className="px-4 py-2 rounded-md bg-green-150 text-white hover:bg-green-150/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!isNextPage}
