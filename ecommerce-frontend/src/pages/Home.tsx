@@ -72,7 +72,7 @@ const Home = () => {
 
             <WobbleCard
               containerClassName="col-span-1 min-h-[300px]"
-              navigateTo="/category/t-shirts"
+              navigateTo="/category/t-shirt"
             >
               <div className="max-w-xs">
                 <h2 className="text-left uppercase text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
