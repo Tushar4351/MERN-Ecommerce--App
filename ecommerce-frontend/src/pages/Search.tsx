@@ -76,11 +76,7 @@ const Search = () => {
           className={`
           fixed top-0 left-0 z-50 min-w-[20rem] h-screen p-8 shadow-md 
           bg-white transform transition-transform duration-300 ease-in-out
-          ${
-            isSidebarOpen
-              ? "translate-x-1/2 translate-y-1/2"
-              : "-translate-x-full"
-          }
+          ${isSidebarOpen ? "" : "-translate-x-full"}
           md:static md:translate-x-0 md:flex md:flex-col md:justify-start md:gap-10
         `}
         >

@@ -78,9 +78,9 @@ const AddressForm: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="grid md:grid-cols-2 gap-8"
+        className="max-w-4xl mx-auto"
       >
-        <div className="space-y-6 md:border-r-2 md:pr-8">
+        <div className="space-y-6 md:pr-8">
           <h2 className="text-2xl font-bold mb-6">Shipping Address</h2>
 
           <form className="space-y-4 flex flex-col" onSubmit={submitHandler}>

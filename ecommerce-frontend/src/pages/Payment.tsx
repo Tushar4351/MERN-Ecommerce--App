@@ -49,6 +49,7 @@ const CheckOutForm = () => {
     setIsProcessing(true);
 
     const userId = user?._id;
+  
 
     const orderData: NewOrderRequest = {
       shippingInfo,
@@ -104,6 +105,11 @@ const CheckOutForm = () => {
 const Payment = () => {
   const [cardType, setCardType] = useState("credit");
   const location = useLocation();
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
+  const {
+    shippingInfo,
+  } = useSelector((state: RootState) => state.cartReducer);
 
   const clientSecret: string | undefined = location.state;
 
@@ -176,9 +182,9 @@ const Payment = () => {
             <h2 className="text-xl font-semibold text-gray-900 mb-3">
               Shipping To
             </h2>
-            <h3 className="font-sora-medium text-md">Tushar Bhowal</h3>
+            <h3 className="font-sora-medium text-md">{ user?.name}</h3>
             <p className="text-gray-500 text-sm">
-              79,ichapur goalapara gurudua,743144
+              {shippingInfo.address},{shippingInfo.city},{shippingInfo.pinCode}
             </p>
           </div>
           <div className="h-1/2 p-6">

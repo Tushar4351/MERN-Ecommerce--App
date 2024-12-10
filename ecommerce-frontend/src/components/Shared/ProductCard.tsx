@@ -24,7 +24,7 @@ const ProductCard = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
-      className="group relative w-[236px]"
+      className="group relative w-full sm:w-[236px]"
     >
       <div className="relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
         <img
