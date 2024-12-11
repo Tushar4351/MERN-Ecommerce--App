@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Cart = () => {
   const { cartItems, subtotal, tax, total, shippingCharges, discount } =
@@ -76,13 +77,48 @@ const Cart = () => {
     dispatch(calculatePrice());
   }, [cartItems]);
 
-  return (
-    <section className="bg-white  antialiased py-16">
-      <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
-        <Breadcrumb pageName="Home" currentPage="Shopping Cart" />
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
 
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  return (
+    <section className="bg-white antialiased py-16">
+      <Breadcrumb pageName="Home" currentPage="Shopping Cart" />
+
+      <motion.div
+        className="mx-auto max-w-screen-xl px-4 2xl:px-0"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
         <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-          <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+          <motion.div
+            className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl"
+            variants={itemVariants}
+          >
             <div className="space-y-6">
               {cartItems.length > 0 ? (
                 cartItems.map((i, idx) => (
@@ -98,10 +134,16 @@ const Cart = () => {
                 <h1 className="text-center text-gray-900">No Items Added</h1>
               )}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
-            <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+          <motion.div
+            className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full"
+            variants={itemVariants}
+          >
+            <motion.div
+              className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6"
+              variants={itemVariants}
+            >
               <p className="text-xl font-semibold text-gray-900">
                 Order summary
               </p>
@@ -151,7 +193,10 @@ const Cart = () => {
                 </dl>
               </div>
 
-              <div className="flex items-center justify-center gap-2">
+              <motion.div
+                className="flex items-center justify-center gap-2"
+                variants={itemVariants}
+              >
                 <span className="text-sm font-normal text-gray-500"> or </span>
                 <Link
                   to="/products"
@@ -160,15 +205,18 @@ const Cart = () => {
                 >
                   Continue Shopping
                 </Link>
-              </div>
+              </motion.div>
               <Button className="w-full bg-green-150 hover:bg-green-150/80">
                 <Link to="/shipping" className="text-white">
                   Proceed to Checkout
                 </Link>
               </Button>
-            </div>
+            </motion.div>
 
-            <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm  sm:p-6">
+            <motion.div
+              className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6"
+              variants={itemVariants}
+            >
               <div className="mb-2 text-sm font-medium text-gray-900 ">
                 Do you have a coupon or gift card?
               </div>
@@ -197,10 +245,10 @@ const Cart = () => {
                   Apply Code
                 </Button>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

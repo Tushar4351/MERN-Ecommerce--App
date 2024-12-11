@@ -111,6 +111,33 @@ const Payment = () => {
 
   const clientSecret: string | undefined = location.state;
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   if (!clientSecret) return <Navigate to={"/shipping"} />;
   return (
     <Elements
@@ -123,8 +150,16 @@ const Payment = () => {
         <Breadcrumb pageName="shipping" currentPage="Payment" />
       </div>
 
-      <div className="flex flex-col md:flex-row max-w-7xl mx-auto w-full justify-center items-center md:items-baseline border-t-2">
-        <div className="p-6 space-y-6 md:border-r-2 sm:w-2/3">
+      <motion.div 
+        className="flex flex-col md:flex-row max-w-7xl mx-auto w-full justify-center items-center md:items-baseline border-t-2"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <motion.div 
+          className="p-6 space-y-6 md:border-r-2 sm:w-2/3"
+          variants={itemVariants}
+        >
           <div className="text-xl font-semibold text-gray-900">Card Type</div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -173,10 +208,16 @@ const Payment = () => {
             </motion.button>
           </div>
           <CheckOutForm />
-        </div>
+        </motion.div>
 
-        <div className="rounded-lg flex flex-col md:w-1/3 border-2 sm:w-1/2 md:border-0">
-          <div className="flex flex-col border-b-2 h-1/3 p-6">
+        <motion.div 
+          className="rounded-lg flex flex-col md:w-1/3 border-2 sm:w-1/2 md:border-0"
+          variants={itemVariants}
+        >
+          <motion.div 
+            className="flex flex-col border-b-2 h-1/3 p-6"
+            variants={itemVariants}
+          >
             <h2 className="text-xl font-semibold text-gray-900 mb-3">
               Shipping To
             </h2>
@@ -184,8 +225,11 @@ const Payment = () => {
             <p className="text-gray-500 text-sm">
               {shippingInfo.address},{shippingInfo.pinCode}
             </p>
-          </div>
-          <div className="h-1/2 p-6">
+          </motion.div>
+          <motion.div 
+            className="h-1/2 p-6"
+            variants={itemVariants}
+          >
             <p className="text-xl font-semibold text-gray-900 mb-3">
               Order summary
             </p>
@@ -230,9 +274,9 @@ const Payment = () => {
                 <dd className="text-base font-bold text-gray-900 ">₹{total}</dd>
               </dl>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </Elements>
   );
 };

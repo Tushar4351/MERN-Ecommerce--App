@@ -1,4 +1,3 @@
-import { server } from "@/redux/store";
 import { CartItem } from "@/types/types";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -17,15 +16,13 @@ const CartItemCard = ({
   removeHandler,
 }: CartItemProps) => {
   const { photo, productId, name, price, quantity } = cartItem;
+  console.log(photo);
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
         <Link to={`/product/${productId}`}>
-          <img
-            className="h-20 w-20"
-            src={`${server}/${photo}`}
-            alt="Product image"
-          />
+          <img className="h-20 w-20 rounded-md" src={photo} alt="Product image" />
         </Link>
 
         <label htmlFor="counter-input" className="sr-only">
