@@ -16,6 +16,11 @@ import {
 } from "../utils/features.js";
 // import {faker} from "@faker-js/faker"
 
+interface PhotoInterface {
+  public_id: string;
+  url: string;
+}
+
 // Revalidate on New,Update,Delete Product & on New Order
 export const getlatestProducts = TryCatch(async (req, res, next) => {
   let products;
@@ -121,7 +126,7 @@ export const newProduct = TryCatch(
 
 export const updateProduct = TryCatch(async (req, res, next) => {
   const { id } = req.params;
-  const { name, price, stock, category, description } = req.body;
+  const { name, price, stock, category, gender } = req.body;
   const photos = req.files as Express.Multer.File[] | undefined;
 
   const product = await Product.findById(id);
@@ -129,20 +134,30 @@ export const updateProduct = TryCatch(async (req, res, next) => {
   if (!product) return next(new ErrorHandler("Product Not Found", 404));
 
   if (photos && photos.length > 0) {
+    // Upload new photos
     const photosURL = await uploadToCloudinary(photos);
 
+    // Remove existing photos from Cloudinary
     const ids = product.photos.map((photo) => photo.public_id);
-
     await deleteFromCloudinary(ids);
 
-    product.photos = photosURL;
+    // Clear existing photos and add new ones
+    product.photos.splice(0, product.photos.length);
+
+    // Add new photos using Mongoose's DocumentArray methods
+    photosURL.forEach((photoData) => {
+      product.photos.push({
+        public_id: photoData.public_id,
+        url: photoData.url,
+      } as PhotoInterface);
+    });
   }
 
   if (name) product.name = name;
   if (price) product.price = price;
   if (stock) product.stock = stock;
   if (category) product.category = category;
-  // if (description) product.description = description;
+  if (gender) product.gender = gender;
 
   await product.save();
 

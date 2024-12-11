@@ -11,6 +11,7 @@ import {
 } from "@/redux/api/productApi";
 import { RootState } from "@/redux/store";
 import { responseToast } from "@/utils/Features";
+import { useFileHandler } from "6pp";
 
 const ProductManagement = () => {
   const { user } = useSelector((state: RootState) => state.userReducer);
@@ -28,36 +29,21 @@ const ProductManagement = () => {
     price: 0,
     // description: "",
   };
-
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
   const [priceUpdate, setPriceUpdate] = useState<number>(price);
   const [stockUpdate, setStockUpdate] = useState<number>(stock);
   const [nameUpdate, setNameUpdate] = useState<string>(name);
   const [categoryUpdate, setCategoryUpdate] = useState<string>(category);
-  const [photoUpdate, setPhotoUpdate] = useState<string>("");
-  const [photoFile, setPhotoFile] = useState<File>();
   // const [descriptionUpdate, setDescriptionUpdate] =
   //   useState<string>(description);
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
-  const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = e.target.files?.[0];
-
-    const reader: FileReader = new FileReader();
-
-    if (file) {
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setPhotoUpdate(reader.result);
-          setPhotoFile(file);
-        }
-      };
-    }
-  };
-
+  const photosFiles = useFileHandler("multiple", 10, 5);
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setBtnLoading(true);
     try {
       const formData = new FormData();
 
@@ -68,7 +54,11 @@ const ProductManagement = () => {
         formData.set("stock", stockUpdate.toString());
 
       if (categoryUpdate) formData.set("category", categoryUpdate);
-      if (photoFile) formData.set("photo", photoFile);
+      if (photosFiles.file && photosFiles.file.length > 0) {
+        photosFiles.file.forEach((file) => {
+          formData.append("photos", file);
+        });
+      }
 
       const userId = user?._id;
       const producId = data?.product._id;
@@ -81,6 +71,8 @@ const ProductManagement = () => {
       responseToast(res, navigate, "/admin/product");
     } catch (error) {
       console.log(error);
+    } finally {
+      setBtnLoading(false);
     }
   };
 
@@ -136,9 +128,8 @@ const ProductManagement = () => {
         <article
           style={{ height: "85vh" }}
           className="w-full max-w-md p-8 flex flex-col relative rounded-xl bg-white text-gray-700 shadow-md"
-          
         >
-             <Button
+          <Button
             className="bg-black-text hover:bg-black-text/90 w-1/6"
             onClick={deleteHandler}
           >
@@ -198,24 +189,37 @@ const ProductManagement = () => {
             </div>
             <div>
               <label className="block mt-2 mb-2 text-sm font-medium text-gray-900">
-                Photo
+                Photos
               </label>
               <input
                 className="bg-gray-50 border mb-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 type="file"
-                onChange={changeImageHandler}
+                accept="image/*"
+                multiple
+                onChange={photosFiles.changeHandler}
               />
             </div>
 
-            {photoUpdate && (
-              <img
-                className="rounded-xl w-28 h-28"
-                src={photoUpdate}
-                alt="New Image"
-              />
+            {photosFiles.error && <p>{photosFiles.error}</p>}
+
+            {photosFiles.preview && (
+              <div style={{ display: "flex", gap: "1rem", overflowX: "auto" }}>
+                {photosFiles.preview.map((img, i) => (
+                  <img
+                    style={{ width: 100, height: 100, objectFit: "cover" }}
+                    key={i}
+                    src={img}
+                    alt="New Image"
+                  />
+                ))}
+              </div>
             )}
             <div>
-              <Button variant="destructive" className="w-full">
+              <Button
+                disabled={btnLoading}
+                variant="destructive"
+                className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 Update
               </Button>
             </div>
