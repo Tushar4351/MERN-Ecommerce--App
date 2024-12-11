@@ -20,7 +20,7 @@ const ProductManagement = () => {
 
   const { data, isError } = useProductDetailsQuery(params.id!);
 
-  const { price, photo, name, stock, category } = data?.product || {
+  const { price, photos, name, stock, category } = data?.product || {
     photo: [],
     category: "",
     name: "",
@@ -120,7 +120,7 @@ const ProductManagement = () => {
           <strong className="mb-5 text-slate-400">
             ID - {data?.product._id}
           </strong>
-          <img className="" src={`${server}/${photo}`} alt="Product" />
+          <img className="" src={`${photos?.[0]?.url}`} alt="Product" />
           <p className="text-xl text-center uppercase mt-10 mb-3">{name}</p>
           {stock > 0 ? (
             <span className="absolute top-3 right-4 text-green-500">

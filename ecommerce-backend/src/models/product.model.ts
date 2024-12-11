@@ -3,7 +3,18 @@ import mongoose from "mongoose";
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "Please Enter Name"] },
-    photo: { type: String, required: [true, "Please add photo"] },
+    photos: [
+      {
+        public_id: {
+          type: String,
+          required: [true, "Please enter Public ID"],
+        },
+        url: {
+          type: String,
+          required: [true, "Please enter URL"],
+        },
+      },
+    ],
     price: { type: Number, required: [true, "Please Enter the Price"] },
     stock: { type: Number, required: [true, "Please Enter the Stock"] },
     gender: {

@@ -1,10 +1,13 @@
-import { server } from "@/redux/store";
+
 import { CartItem } from "@/types/types";
 import { BsCart3 } from "react-icons/bs";
 import { motion } from "framer-motion";
 type ProductsProps = {
   productId: string;
-  photo: string;
+  photos: {
+    url: string;
+    public_id: string;
+  }[];
   name: string;
   price: number;
   stock: number;
@@ -15,7 +18,7 @@ const ProductCard = ({
   productId,
   price,
   name,
-  photo,
+  photos,
   stock,
   handler,
 }: ProductsProps) => {
@@ -29,7 +32,7 @@ const ProductCard = ({
       <div className="relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
         <img
           className="h-full w-full object-cover object-center lg:h-full lg:w-full transition duration-500 group-hover:scale-105"
-          src={`${server}/${photo}`}
+          src={`${photos?.[0]?.url}`}
           alt={name}
         />
         <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
@@ -39,7 +42,7 @@ const ProductCard = ({
                 productId,
                 price,
                 name,
-                photo,
+                photo: photos[0].url,
                 stock,
                 quantity: 1,
               })

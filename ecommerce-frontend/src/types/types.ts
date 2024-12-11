@@ -17,10 +17,14 @@ export type Product = {
   price: number;
   stock: number;
   category: string;
+  gender: string;
   ratings: number;
   numOfReviews: number;
   description: string;
-  photo: string;
+  photos: {
+    url: string;
+    public_id: string;
+  }[];
   _id: string;
 };
 

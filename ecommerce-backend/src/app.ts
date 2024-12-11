@@ -6,6 +6,7 @@ import { config } from "dotenv";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import Stripe from "stripe";
+import { v2 as cloudinary } from "cloudinary";
 
 //importing routes
 import userRoute from "./routes/user.route.js";
@@ -22,8 +23,15 @@ config({
 const port = process.env.PORT || 4000;
 const mongoURI = process.env.MONGO_URI || "";
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
+const ClientUrl = process.env.CLIENT_URL || "";
 
 connectDB(mongoURI);
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 export const stripe = new Stripe(stripeSecretKey);
 export const myCache = new NodeCache();
@@ -34,7 +42,8 @@ app.use(cookieParser()); // allows us to parse incoming cookies
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "https://nexcartia-ecommerce.vercel.app",
+    origin: ClientUrl,
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );

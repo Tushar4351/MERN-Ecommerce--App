@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 import { CustomError } from "@/types/api-types";
 import toast from "react-hot-toast";
-import { RootState, server } from "@/redux/store";
+import { RootState} from "@/redux/store";
 import { LineSkeleton } from "@/components/Shared/Loader";
 
 interface DataType {
@@ -63,7 +63,7 @@ const Products = () => {
     if (data)
       setRows(
         data.products.map((i) => ({
-          photo: <img src={`${server}/${i.photo}`} className="w-20"/>,
+          photo: <img src={`${i.photos?.[0]?.url}`} className="w-20"/>,
           name: i.name,
           price: i.price,
           stock: i.stock,
