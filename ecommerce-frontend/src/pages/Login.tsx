@@ -183,7 +183,7 @@ const AuthForm: React.FC = () => {
         `}
       </style>
       <div className="flex-1 flex flex-col justify-center px-4 py-10 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
+        <div className="mx-auto mt-5 w-full max-w-sm lg:w-96">
           <div className="flex justify-between">
             <button className="rounded-full border-2 py-1 px-2 font-semibold">
               <Link to="/">←</Link>

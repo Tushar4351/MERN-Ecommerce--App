@@ -26,7 +26,7 @@ const AdminSidebar = () => {
   );
 
   const resizeHandler = () => {
-    setPhoneActive(window.innerWidth < 1280);
+    setPhoneActive(window.innerWidth < 1024);
   };
 
   useEffect(() => {
@@ -46,13 +46,21 @@ const AdminSidebar = () => {
       )}
 
       <aside
-        className={`bg-white fixed inset-0 z-50 h-screen w-64 rounded-xl transition-transform duration-300 xl:translate-x-0  ${
-          phoneActive ? (showModal ? "translate-x-0 overflow-y-auto" : "-translate-x-80") : ""
+        className={`bg-white fixed inset-0 z-[100] h-screen w-64 rounded-xl transition-transform duration-300 xl:translate-x-0  ${
+          phoneActive
+            ? showModal
+              ? "translate-x-0 overflow-y-auto"
+              : "-translate-x-80"
+            : ""
         }`}
       >
-         <Link to={"/"} className="">
-            <img src={logo} className="ml-3 mt-5 h-7 sm:h-10 rounded-lg" alt="Logo" />
-          </Link>
+        <Link to={"/"} className="">
+          <img
+            src={logo}
+            className="ml-3 mt-5 h-7 sm:h-10 rounded-lg"
+            alt="Logo"
+          />
+        </Link>
         <DivOne location={location} />
         <DivTwo location={location} />
         <DivThree location={location} />
